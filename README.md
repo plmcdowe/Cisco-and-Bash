@@ -1,5 +1,10 @@
 # Bash on Cisco IOS   
 brief intro to   
+```
+conf t
+shell processing full
+```
+
 
 ## [ SHCMDS ]()
 ```Bash
