@@ -6,7 +6,6 @@ conf t
 shell processing full
 ```
 
-
 ## [ SH CMDS ]()
 ```Bash
 #_____________________________________________________________________________________________________________________________________________________________________________________________________________________|
@@ -28,6 +27,10 @@ function version(){
     printf ''"$V"' is not compliant'
   fi
 }
+```
+
+```Bash
+
 # Simple function example: $V is not empty, and $V does not regex match '16.06', and $V does regex match '15.10' or '17.12'
 # This check is mostly just to give a simple exammple 
 function version(){
