@@ -6,7 +6,7 @@ shell processing full
 ```
 
 
-## [ SHCMDS ]()
+## [ SH CMDS ]()
 ```Bash
 
 ```   
