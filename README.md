@@ -7,13 +7,13 @@
 ## [ 1 ] **Intro:**   
 IOS.sh has been available in Cisco since *early* IOS 15.    
 It is a shell environment that peels back the Cisco CLI, allowing many familiar Bash/Shell commands.   
-IOS.sh can be enabled epehmerally with: `terminal shell` from privileged exec.
+IOS.sh can be enabled epehmerally with: `terminal shell` from privileged exec.     
 Or, it can be configured as a permenant feature with:
 ```
 conf t
 shell processing full
 ```    
-I have implemented `shell processing full`.
+I chose the `shell processing full` route.
 With the feature enabled, you can save and load "shell environments", stored in bootflash.     
 (More on this later).    
 
@@ -22,14 +22,15 @@ The documentation from Cisco isn't *great*... and, posts I've found online are f
 * *hardly* scrape the surface of this feature's capabilities.       
 
 So, I put this readme togther with progressively more advanced examples and practical implementations.   
-These examples should help make better sense of the Shell environments [ SWCFG ](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWCFG.sh) and [ SWFIX ](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWFIX.sh)     
+These examples should help make better sense of the Shell environments [ SWCFG ](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWCFG.sh) and [ SWFIX ](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWFIX.sh) also in this repository.         
      
-I won't be touching on Regular Expression basics at all.      
+I won't be deliberately covering any regex basics.      
+At times, I may point out a basic regex concept for the sake of explaining IOS.sh mechanics.    
 I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/regex-quickstart.php) | [ TLDP, Basic Regex ](https://tldp.org/LDP/Bash-Beginners-Guide/html/chap_04.html) | [ TLDP, Advanced Regex ](https://tldp.org/LDP/abs/html/abs-guide.html#REGEXP)     
 
 ---   
 ## [ 2 ] **Examples**     
-> ### [ 2.1 ] *IOS Version*    
+> ### [ 2.1 ] <ins>IOS Version</ins> 🔎   
 >> ```Bash
 >> # Full: ( show version )
 >> # Shortest: sh ve
@@ -37,15 +38,15 @@ I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/r
 >> # Display all information about a switch or router:
 >>   uname -a
 >> ```
->> ![uname-a-R](https://github.com/user-attachments/assets/5c84ea4c-cf3f-4e92-95fc-cfd2ea8a57cb)       
+>>> ![uname-a-R](https://github.com/user-attachments/assets/5c84ea4c-cf3f-4e92-95fc-cfd2ea8a57cb)       
 >>     
->> ```Bash
+>> ```bash
 >> # Display only the version number on routers and switches:
 >>   uname -a|grep '1[5|7]'|cut -d "," -f 3|cut -d " " -f 3
 >> ```
->> ![uname-a-cut-R](https://github.com/user-attachments/assets/6b97b764-bfce-46d0-a84f-ff651d052b0e)     
+>>> ![uname-a-cut-R](https://github.com/user-attachments/assets/6b97b764-bfce-46d0-a84f-ff651d052b0e)     
 >>
->> ```Bash
+>> ```bash
 >> # Simple function example: $V is not empty, and $V regex match '17.12' or '17.09' -
 >> #  - good where you allow any sub release within the dot release, such as 17.12.4 or 17.09.05a
 >>   function version(){
@@ -54,7 +55,7 @@ I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/r
 >>    else printf ''"$V"' is not compliant'; fi;
 >>   }
 >> ```
->> ![uname-func-1-R](https://github.com/user-attachments/assets/21a54686-85f4-4d4a-b128-061ed00e5982)     
+>>> ![uname-func-1-R](https://github.com/user-attachments/assets/21a54686-85f4-4d4a-b128-061ed00e5982)     
 >>    
 >> ```Bash
 >> # Alternatively, you could constrain to an exact release using `uname -a` with a "," in your pattern
@@ -64,13 +65,13 @@ I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/r
 >>    else printf 'not compliant'; fi;
 >>   }
 >> ```
->> ![uname-func-2-R](https://github.com/user-attachments/assets/20deb34b-2d7c-472b-b9c1-a4610ed13e9c)
+>>> ![uname-func-2-R](https://github.com/user-attachments/assets/20deb34b-2d7c-472b-b9c1-a4610ed13e9c)
 >>    
 >> ```Bash
 >> # You can also use `( head | tail [#-of-lines] )`
 >>   sh ve|head 1
 >> ```
->> ![sh-ve-head-1-R](https://github.com/user-attachments/assets/8dcdbf53-3ea1-4f7a-aa0b-fb49efec72b6)
+>>> ![sh-ve-head-1-R](https://github.com/user-attachments/assets/8dcdbf53-3ea1-4f7a-aa0b-fb49efec72b6)
 >>       
 >> ```Bash
 >> # Let's try it in a function:
@@ -82,13 +83,13 @@ I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/r
 >> #  - a literal 17.12.04 will not match the returned 17.12.04a
 >> # But you can see in the output that our condition tested true!
 >> ```     
->> ![sh-ve-grep-bad-R](https://github.com/user-attachments/assets/9f34ddb0-b001-4fe4-9577-98031a483e87)    
+>>> ![sh-ve-grep-bad-R](https://github.com/user-attachments/assets/32214d07-bc76-4bbb-b158-af5c3f8d9ba4)       
 >>     
->> ```Bash
+>> ```bash
 >> # Let's try only the command in CLI:
 >>   sh ve|grep  '17.12.04$'
 >> ```
->> ![sh-ve-grep-bad-cmd-R](https://github.com/user-attachments/assets/8acfe776-34b0-415b-834c-a3713d7a091d)
+>>> ![sh-ve-grep-bad-cmd-R](https://github.com/user-attachments/assets/5ce67b27-a61d-44e7-bc8d-ea61c827c99b)    
 >>
 >> There's the problem! It returns `grep [pattern that fails to match]`
 >>     
@@ -102,31 +103,37 @@ I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/r
 >> 3. Use `i` for `include` instead of `grep` because Cisco's built in parser return's nothing.
 >>    * Likely the best option in this case: ```if [[ `sh ve | i 17.12.04a` ]]```
 >>     
->> ![sh-ve-inc-R](https://github.com/user-attachments/assets/b41e5b2c-dea3-4bf0-b1ee-4549bd9b452f)
->>
->    
-> ### [ 2.2 ] *Interfaces*    
->>
->> ```Bash
+>>> ![sh-ve-inc-R](https://github.com/user-attachments/assets/b41e5b2c-dea3-4bf0-b1ee-4549bd9b452f)     
+> ---        
+> ### [ 2.2 ] <ins>Interfaces</ins> 🔎    
+>> ```bash
 >> # Full: ( show interface status )							
 >> # Shortest: sh int statu
 >>
 >> # Display only connected trunk interfaces:
 >>   sh int status|grep '^[[:alpha:]]{2}./.*connected[[:blank:]]{4}trunk'
 >> ```
->> ![full-only-connected-trunks-R](https://github.com/user-attachments/assets/1a3529e7-d34b-419d-9492-311155acfd7e)    
+>>> ![full-only-connected-trunks-R](https://github.com/user-attachments/assets/1a3529e7-d34b-419d-9492-311155acfd7e)    
 >>      
->> ```Bash
+>> ```bash
 >> # Display only the interface of connected trunk interfaces:
 >>   sh int status|grep '^[[:alpha:]]{2}./.*connected[[:blank:]]{4}trunk'|cut -d ' ' -f 1
 >> ```
->> ![int-only-connected-trunks-R](https://github.com/user-attachments/assets/eab52130-f95f-4b90-a893-d768a605f912)
+>>> ![int-only-connected-trunks-R](https://github.com/user-attachments/assets/eab52130-f95f-4b90-a893-d768a605f912)
 >>
->> ```Bash
+>> ```bash
 >> # Display only DISCONNECTED trunk interfaces *THIS SHOULD RETURN THE GREP PATTERN, NO INTERFACES*:
 >>   sh int status|grep '^[[:alpha:]]{2}./.*not.*trunk'
+>>
+>> # Lets take a look at a function to introduce a simple compliance usecase:
+>>   function trunks(){
+>>    for t in `sh int status|grep '^[[:alpha:]]{2}./.*connected[[:blank:]]{4}trunk'| cut -d ' ' -f 1`; do printf '\nMy name is '"$t"' and I am a connected trunk\n'; done;
+>>    for t in `sh int status|grep '^[[:alpha:]]{2}./.*not.*trunk'|cut -d ' ' -f 1`; do printf '\nDICONNECTED trunk: '"$t"'\n  Defaulting and reconfiguring as 802.1x access\n  SV-220667r991904\n  SV-220671r991908\n'; done;
+>>   }
 >> ```
->> 
+>>> ![stig-disconnected-trunks-func-R](https://github.com/user-attachments/assets/20c880f8-0c83-4c7c-bc9a-530f3c445724)
+>>
+>> ```bash
 >> # Display full output of only connected access interfaces:
 >>   sh int status|grep '^[[:alpha:]]{2}.*/.*[[:blank:]]connected[[:blank:]]{4}[[:digit:]]'
  
