@@ -23,67 +23,112 @@ The documentation from Cisco isn't *great*... and, posts I've found online are f
 
 So, I put this readme togther with progressively more advanced examples and practical implementations.   
 These examples should help make better sense of the Shell environments [ SWCFG ](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWCFG.sh) and [ SWFIX ](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWFIX.sh)     
+     
+I won't be touching on Regular Expression basics at all.      
+I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/regex-quickstart.php) | [ TLDP, Basic Regex ](https://tldp.org/LDP/Bash-Beginners-Guide/html/chap_04.html) | [ TLDP, Advanced Regex ](https://tldp.org/LDP/abs/html/abs-guide.html#REGEXP)     
 
-## [ 2 ] **Examples**
-```Bash
-#_____________________________________________________________________________________________________________________________________________________________________________________________________________________|
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
- # Full: ( show version )
- # Shortest: sh ver
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
- #
- # Display only the version number on routers and switches:
-    uname -a|grep '1[5|7]'|cut -d "," -f 3|cut -d " " -f 3
- #
- # Simple function example: $V is not empty, and $V regex match '17.12' or '17.09'
-function version(){
-  V=`uname -a|grep '1[5|7]'|cut -d "," -f 3|cut -d " " -f 3`
-  if [[ -n "$V" && ( $V =~ '17.12' || $V =~ '17.09' ) ]]
-  then
-    printf ''"$V"' is compliant'
-  else
-    printf ''"$V"' is not compliant'
-  fi
-}
-```
-
-```Bash
-
-# Simple function example: $V is not empty, and $V does not regex match '16.06', and $V does regex match '15.10' or '17.12'
-# This check is mostly just to give a simple exammple 
-function version(){
-  V=`uname -a|grep '1[5|6|7]'|cut -d "," -f 3|cut -d " " -f 3`
-  if [[ -n "$V" && ( ! "$V" =~ '16.06' && ( $V =~ '15.10' || $V =~ '17.12' ) ) ]]
-  # Alternatively: if [[ -n "$V" && ( $V != '16.06' && ( $V =~ '15.10' || $V =~ '17.12' ) ) ]]
-  then
-    printf ''"$V"' is compliant'
-  else
-    printf ''"$V"' is not compliant'
-  fi
-}
-#_____________________________________________________________________________________________________________________________________________________________________________________________________________________|
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
- # Full: ( show interface status )							
- # Shortest: sh int statu
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
- #
- # Display only trunk interfaces:
-    sh int status | i trunk
- 
- # Display only connected trunk interfaces:
-    sh int status|grep '^[[:alpha:]]{2}./.*connected[[:blank:]]{4}trunk'
- 
- # Display only the interface of connected trunk interfaces:
-    sh int status|grep '^[[:alpha:]]{2}./.*connected[[:blank:]]{4}trunk'|cut -d ' ' -f 1
- 
- # Display only DISCONNECTED trunk interfaces *THIS SHOULD RETURN THE GREP PATTERN, NO INTERFACES*:
-    sh int status|grep '^[[:alpha:]]{2}./.*not.*trunk'
- 
- # Display only access interfaces:
-    sh int status | e trunk
- 
- # Display full output of only connected access interfaces:
-    sh int status|grep '^[[:alpha:]]{2}.*/.*[[:blank:]]connected[[:blank:]]{4}[[:digit:]]'
+---   
+## [ 2 ] **Examples**     
+> ### [ 2.1 ] *IOS Version*    
+>> ```Bash
+>> # Full: ( show version )
+>> # Shortest: sh ve
+>> #
+>> # Display all information about a switch or router:
+>>   uname -a
+>> ```
+>> ![uname-a-R](https://github.com/user-attachments/assets/5c84ea4c-cf3f-4e92-95fc-cfd2ea8a57cb)       
+>>     
+>> ```Bash
+>> # Display only the version number on routers and switches:
+>>   uname -a|grep '1[5|7]'|cut -d "," -f 3|cut -d " " -f 3
+>> ```
+>> ![uname-a-cut-R](https://github.com/user-attachments/assets/6b97b764-bfce-46d0-a84f-ff651d052b0e)     
+>>
+>> ```Bash
+>> # Simple function example: $V is not empty, and $V regex match '17.12' or '17.09' -
+>> #  - good where you allow any sub release within the dot release, such as 17.12.4 or 17.09.05a
+>>   function version(){
+>>    V=`uname -a|grep '1[5|7]'|cut -d "," -f 3|cut -d " " -f 3`
+>>    if [[ -n "$V" && ( $V =~ '17.12' || $V =~ '17.09' ) ]]; then printf ''"$V"' is compliant';
+>>    else printf ''"$V"' is not compliant'; fi;
+>>   }
+>> ```
+>> ![uname-func-1-R](https://github.com/user-attachments/assets/21a54686-85f4-4d4a-b128-061ed00e5982)     
+>>    
+>> ```Bash
+>> # Alternatively, you could constrain to an exact release using `uname -a` with a "," in your pattern
+>> # Note also, you can eliminate storing the retun and simply test the command's returned status
+>>   function version(){
+>>    if [[ `uname -a|grep '17.12.3,'` ]]; then printf 'compliant';
+>>    else printf 'not compliant'; fi;
+>>   }
+>> ```
+>> ![uname-func-2-R](https://github.com/user-attachments/assets/20deb34b-2d7c-472b-b9c1-a4610ed13e9c)
+>>    
+>> ```Bash
+>> # You can also use `( head | tail [#-of-lines] )`
+>>   sh ve|head 1
+>> ```
+>> ![sh-ve-head-1-R](https://github.com/user-attachments/assets/8dcdbf53-3ea1-4f7a-aa0b-fb49efec72b6)
+>>       
+>> ```Bash
+>> # Let's try it in a function:
+>>   function version(){
+>>    if [[ `sh ve|grep  '17.12.04$'` ]]; then printf 'compliant';
+>>    else printf 'not compliant'; fi;
+>>   }
+>> # Our pattern is anchored with the "$" so it should return 'not compliant' -
+>> #  - a literal 17.12.04 will not match the returned 17.12.04a
+>> # But you can see in the output that our condition tested true!
+>> ```     
+>> ![sh-ve-grep-bad-R](https://github.com/user-attachments/assets/9f34ddb0-b001-4fe4-9577-98031a483e87)    
+>>     
+>> ```Bash
+>> # Let's try only the command in CLI:
+>>   sh ve|grep  '17.12.04$'
+>> ```
+>> ![sh-ve-grep-bad-cmd-R](https://github.com/user-attachments/assets/8acfe776-34b0-415b-834c-a3713d7a091d)
+>>
+>> There's the problem! It returns `grep [pattern that fails to match]`
+>>     
+>> So, 3 main ways to handle this, with additional options to implement that I won't dive into here:
+>> 1. Store the cmd return in a variable, then `if [[ "$V" != "grep" && $V =~ "17.12.04" ]]; then ...`
+>>    * Can be useful if you need the version later, otherwise, `if` and `booleans` *"slow"* things down.
+>>           
+>> 2. Use `!` for "not match": ```if [[ ! `sh ve|grep  '17.12.04a'` =~ "grep" ]]```
+>>    * A little convoluted, but valid - I've had to use simliar before.
+>>           
+>> 3. Use `i` for `include` instead of `grep` because Cisco's built in parser return's nothing.
+>>    * Likely the best option in this case: ```if [[ `sh ve | i 17.12.04a` ]]```
+>>     
+>> ![sh-ve-inc-R](https://github.com/user-attachments/assets/b41e5b2c-dea3-4bf0-b1ee-4549bd9b452f)
+>>
+>    
+> ### [ 2.2 ] *Interfaces*    
+>>
+>> ```Bash
+>> # Full: ( show interface status )							
+>> # Shortest: sh int statu
+>>
+>> # Display only connected trunk interfaces:
+>>   sh int status|grep '^[[:alpha:]]{2}./.*connected[[:blank:]]{4}trunk'
+>> ```
+>> ![full-only-connected-trunks-R](https://github.com/user-attachments/assets/1a3529e7-d34b-419d-9492-311155acfd7e)    
+>>      
+>> ```Bash
+>> # Display only the interface of connected trunk interfaces:
+>>   sh int status|grep '^[[:alpha:]]{2}./.*connected[[:blank:]]{4}trunk'|cut -d ' ' -f 1
+>> ```
+>> ![int-only-connected-trunks-R](https://github.com/user-attachments/assets/eab52130-f95f-4b90-a893-d768a605f912)
+>>
+>> ```Bash
+>> # Display only DISCONNECTED trunk interfaces *THIS SHOULD RETURN THE GREP PATTERN, NO INTERFACES*:
+>>   sh int status|grep '^[[:alpha:]]{2}./.*not.*trunk'
+>> ```
+>> 
+>> # Display full output of only connected access interfaces:
+>>   sh int status|grep '^[[:alpha:]]{2}.*/.*[[:blank:]]connected[[:blank:]]{4}[[:digit:]]'
  
  # Display only the interface of connected access interfaces:
     sh int status|grep '^[[:alpha:]]{2}.*/.*[[:blank:]]connected[[:blank:]]{4}[[:digit:]]'| cut -d ' ' -f 1
