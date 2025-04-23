@@ -1,12 +1,30 @@
-# Bash on Cisco IOS   
-brief intro to   
+# Bash on Cisco IOS     
+---    
+<img width="648" alt="ThisIsFine" src="https://github.com/user-attachments/assets/157a8b74-98f8-466f-bb77-176fa81c4725" />       
 
+---    
+
+## [ 1 ] **Intro:**   
+IOS.sh has been available in Cisco since *early* IOS 15.    
+It is a shell environment that peels back the Cisco CLI, allowing many familiar Bash/Shell commands.   
+IOS.sh can be enabled epehmerally with: `terminal shell` from privileged exec.
+Or, it can be configured as a permenant feature with:
 ```
 conf t
 shell processing full
-```
+```    
+I have implemented `shell processing full`.
+With the feature enabled, you can save and load "shell environments", stored in bootflash.     
+(More on this later).    
 
-## [ SH CMDS ]()
+The documentation from Cisco isn't *great*... and, posts I've found online are from folks who either -       
+* copypasta from the Cisco doc's or,      
+* *hardly* scrape the surface of this feature's capabilities.       
+
+So, I put this readme togther with progressively more advanced examples with practical implementations.   
+These examples should help make better sense of the Shell environments [ SWCFG ](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWCFG.sh) and [ SWFIX ](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWFIX.sh)     
+
+## [ 2 ] **Examples**
 ```Bash
 #_____________________________________________________________________________________________________________________________________________________________________________________________________________________|
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
