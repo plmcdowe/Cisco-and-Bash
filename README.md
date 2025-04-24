@@ -209,7 +209,6 @@ I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/r
 >>
 >> Easy enough, we'll check based on 'not' and 'no'. Let's skip ahead to the complete function:     
 >> ```bash
->> # Simple example function demonstrating the ability to directly test a commands return status:
 >> function fips(){
 >>  if [[ ! `sh sw|grep ^[[:blank:]][[:digit:]]` =~ "grep" ]]; then printf '\n\nSTACK\n';
 >>    else printf '\n\nNOT A STACK\n'
