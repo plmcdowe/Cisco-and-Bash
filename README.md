@@ -157,7 +157,8 @@ I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/r
 >>> * A CAT-1 per device discovered to not be in FIPS {rule ID varied by device family}
 >>> * A Key Indicator of Risk (KIOR)
 >>>   * KIORs were added in Command Cyber Readiness Inspection (CCRI 3.0)
->>>   * If your enterprise recieves arbitrarily too many KIORs, your enterprise (state of Indiana in my case) will be disconnected
+>>>   * If your enterprise recieves arbitrarily too many KIORs,\
+>>>       your enterprise (state of Indiana in my case) will be disconnected.
 >>>   * Certain KIORs are easy to remediate (non-secure services/protocols: FTP)
 >>>     * others are difficult (FIPS),
 >>>     * some are impossible (replacing EOL devices mid-CCRI).
