@@ -13,7 +13,7 @@ Or, it can be configured as a permenant feature with:
 conf t
 shell processing full
 ```    
-I chose the `shell processing full` route.
+I chose the `shell processing full` route.    
 With the feature enabled, you can save and load "shell environments", stored in bootflash.     
 (More on this later).    
 
