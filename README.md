@@ -121,9 +121,9 @@ I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/r
 >> ```
 >>> ![int-only-connected-trunks-R](https://github.com/user-attachments/assets/eab52130-f95f-4b90-a893-d768a605f912)
 >>
->> The next block is the remaining combination of connected/disconnected access/trunk interfaces.
->> I'm not including screenshots for each because it will look the same as above.
->> The `function trunks` includes a screenshot to demonstrate a simple use case for compliance.
+>> The next block is the remaining combination of connected/disconnected access/trunk interfaces.    
+>> I'm not including screenshots for each because it will look the same as above.      
+>> The `function trunks` includes a screenshot to demonstrate a simple use case for compliance.     
 >> ```bash
 >> # Display full output of only DISCONNECTED TRUNK interfaces *THIS SHOULD RETURN THE GREP PATTERN, NO INTERFACES*:
 >>   sh int status|grep '^[[:alpha:]]{2}./.*not.*trunk'
@@ -184,9 +184,9 @@ I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/r
 >>> ![stack-sh-sw-e-R](https://github.com/user-attachments/assets/0c28ef97-98e6-4862-95d4-5dec5f44a908)    
 >>> ![stack-sh-sw-grep-R](https://github.com/user-attachments/assets/5ee3aef1-62cd-4b2a-b1eb-bcd4016c3ce7)     
 >>    
->> Now, let's consider what we learned earlier about `if` tests directly on a command's return.
->> `sh sw | e \\*` is going to give us trouble because, no matter what, it will always return the formatted Switch MAC & column headers.
->> We can more easily work around a `grep` return than that default Cisco output.
+>> Now, let's consider what we learned earlier about `if` tests directly on a command's return.    
+>> `sh sw | e \\*` is going to give us trouble because, no matter what, it will always return the formatted Switch MAC & column headers.    
+>> We can more easily work around a `grep` return than that default Cisco output.    
 >> ```bash
 >> function stack(){
 >>  if [[ ! `sh sw|grep ^[[:blank:]][[:digit:]]` =~ "grep" ]]; then printf '\nSTACK\n';
@@ -195,7 +195,7 @@ I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/r
 >> ```
 >>> ![not-a-stack-func-R](https://github.com/user-attachments/assets/5588f6b6-b561-45da-a068-5d0e7cd8b3ff)
 >>
->> Sweet, not a stack - let's proceed to step 2. checking FIPS status and key:
+>> Sweet, not a stack - let's proceed to step 2. checking FIPS status and key:    
 >> ```bash
 >> # Full: ( show fips [authorization-key || status] )
 >> # Shortest: ( sh fip a || sh fip s )
@@ -205,7 +205,7 @@ I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/r
 >>    # "Switch and Stacking are not running in fips mode"
 >> ```
 >>
->> Easy enough, we'll check based on 'not' and 'no'. Let's skip ahead to the complete function:
+>> Easy enough, we'll check based on 'not' and 'no'. Let's skip ahead to the complete function:     
 >> ```bash
 >> # Simple example function demonstrating the ability to directly test a commands return status:
 >> function fips(){
@@ -219,120 +219,7 @@ I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/r
 >> }
 >> ```
 >>> ![fips-func-R](https://github.com/user-attachments/assets/97eaf832-8888-43a7-8159-d18a2beb0a95)
->>
->> 
-
- # Full: ( show mac address table [ address <mac> || interface <Gi|Po|Te> || vlan <1-4094> ] )
- # Shortest: sh mac ad
- #
- # Return all information for only MAC addresses on a vlan number:
-    sh mac ad | i _71
-    sh mac ad|grep [[:blank:]]71
-    sh mac ad|grep ' 71 '
-
- # Return only the MAC addreses of hosts on a vlan number:
-    sh mac ad|grep ' 71 '|cut -d ' ' -f 7
-
- # Return only the interfaces of hosts on a vlan number:
-    sh mac ad|grep ' 71 '|cut -d ' ' -f 16-17
-
- # Return all information for only specific OUI address(es):
-    sh mac ad | i 605b.30
-    sh mac ad | i 0001.f0 | 1862.e4 | 1893.d7 | 20d7.78 | 247d.4d | 28ec.9a | 3045.11 | 3408.e1 | 3484.e4 | 380b.3c
-    sh mac ad|grep 605b.30
-    sh mac ad|grep ' 605b.30'
-    sh mac ad|grep ' 605b\.30'
-
- # Return all information for only specific OUI addresses:
-    sh mac ad|grep '(0001.f0|1862.e4|1893.d7|20d7.78|247d.4d|28ec.9a|3045.11|3408.e1|3484.e4|380b.3c|3881.d7)'
-
- # Return all information for only specific OUI addresses on a specific vlan:
-    sh mac ad|grep '107.*(0001.f0|1862.e4|1893.d7|20d7.78|247d.4d|28ec.9a|3045.11|3408.e1|3484.e4|380b.3c|3881.d7)'
-
- # Return all information for only specific OUI addresses NOT on a specific vlan or vlans, this example excludes 107 & 119:
-    sh mac ad|grep '(^ 1[^0][^9]).*(0001.f0|1862.e4|1893.d7|20d7.78|247d.4d|28ec.9a|3045.11|3408.e1|3484.e4|380b.3c)'
-
- # extend this further to return only the interfaces of hvac devices not on 107 or 119:
-    sh mac ad|grep '(^ 1[^0][^9].*(1862.e4|247d.4d|28ec.9a|3045.11|3408.e1|3484.e4|380b.3c|3881.d7)'|cut -d ' ' -f 15-17
-
- # Return all information for a specific MAC address ending in a unique last-4 characters:
-    sh mac ad | i \.9526
-    sh mac ad|grep \.9526
-
- # Return all information for a specific interface:
-    sh mac ad int g1/0/1
-    sh mac ad | i 1/0/1_
-    sh mac ad | i 1/0/14
-    sh mac ad|grep 1/0/14
- #
- # Full: ( show authentication sessions database [ interface <Gi|Po|Te> || mac <address> || method <dot1x|mab> ] { details } )
- # Shortest: sh auth ses
- #
- # Return auth session for a specific interface:
-    sh auth ses int g1/0/1 
-    sh auth ses int g1/0/1 | i ^Gi
-    sh auth ses | i 1/0/1_
-
- # Return auth session details for a specific interface:
-    sh auth ses int g1/0/1 detail
-
- # Return formatted auth session details for a specific interface:
-    sh auth ses int g1/0/1 detail | i Interface|MAC|IPv4|__Status:|Domain|Vlan|---|dot1x|mab|User-Name|Current Policy
-
- # Return formatted auth session details for 802.1x sessions:
-    sh auth ses method dot1x detail | i Interface|MAC|IPv4|__Status:|Domain|Vlan|---|dot1x|mab|User-Name|Current Policy
-
- # Return formatted auth session details for MAB sessions:
-    sh auth ses method mab detail | i Interface|MAC|IPv4|__Status:|Domain|Vlan|---|dot1x|mab|User-Name|Current Policy
- #
- # Full: ( show device-tracking database [ address <all|A.B.C.D> || interface <Gi|Te|Vlan> || mac <H.H.H|details> || vlanid <0-4096> ]	)
- # Shortest: sh device-t d
- #
- # sh :
-    sh device-t d | i 605b.30
-    sh device-t d | i 55\.70\.
-
- # sh :
-    sh device-t d mac detail | i 605b.30|IP
-
- # sh :
-    sh device-t d | i DH4
-
- # sh :
-    sh device-t d|grep '(^DH4.*7486.e2)'
-
- # sh :
-    sh device-t|grep '(^ND.*[[:digit:]]/[[:digit:]]/?[[:digit:]]?[[:space:]]{3,4}71)'
-    sh device-t|grep '(^ND.*[[:space:]]71[[:space:]])'
-
- # sh :
-    sh device-t d d|grep 'access'
-    sh device-t d d|grep '(^D|^N|^A).*(access)'|cut -c 1-138
-    sh device-t d d|grep '(^D|^N|^A).*(access[[:space:]]{5}[^7])'|cut -c 1-138
- #
- # Full: ( show ip arp inspection [ interfaces <Gi|Po|Te> || log || statistics || vlan <5,20,71,107,112> ] )
- # Shortest: sh ip ar ins
- #
- # sh :
-    sh ip ar ins s|grep '(^ V|^ -|^[[:blank:]]{3}[2|7])'
-
- #
- # Full: ( show ip dhcp snooping [ binding <A.B.C.D|H.H.H|interface|vlan> || database {detail} || statistics {detail} ] )
- # Shortest: sh ip dh sn
- #
- # sh :
-    sh ip dh sn s
-    sh ip dh sn d d
-    sh ip dh sn b v 71
-    sh ip dh sn b|grep C4:5A:B1
-    sh ip dh sn b in g1/0/13
-
- #
- # Full: ( show ip source binding [ A.B.C.D || H.H.H || dhcp-snooping || interface || vlan ] )
- # Shortest: sh ip sou b
- #
- # sh :
-    sh ip sou b|grep '(74:86:E2)'
-    sh ip sou b | i 74:86:E2
-
- #
+>>    
+# Conclusion:    
+#### There is so much more that can be handled by IOS.sh    
+#### I'll follow up with addition readme's in this repo and link to them at the top of this one.     
