@@ -22,7 +22,7 @@ The documentation from Cisco isn't *great*... and, posts I've found online are f
 * *hardly* scrape the surface of this feature's capabilities.       
 
 So, I put this readme togther with progressively more advanced examples and practical implementations.   
-These examples should help make better sense of the Shell environments [ SWCFG ](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWCFG.sh) and [ SWFIX ](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWFIX.sh) also in this repository.         
+These examples should help make better sense of the Shell environments [ SWCFG ](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWCFG.sh) and [ SWFIX ](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWFIX.sh) in this repository.         
      
 I won't be deliberately covering any regex basics.      
 At times, I may point out a basic regex concept for the sake of explaining IOS.sh mechanics.    
