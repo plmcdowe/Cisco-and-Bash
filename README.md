@@ -95,7 +95,7 @@ I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/r
 >>     
 >> So, 3 main ways to handle this, with additional options to implement that I won't dive into here:
 >> 1. Store the cmd return in a variable, then `if [[ "$V" != "grep" && $V =~ "17.12.04" ]]; then ...`
->>    * Can be useful if you need the version later, otherwise, `if` and `booleans` *"slow"* things down.
+>>    * Can be useful if you need the version later, otherwise, `if` and `booleans` *marginally "slow"* things down.
 >>           
 >> 2. Use `!` for "not match": ```if [[ ! `sh ve|grep  '17.12.04a'` =~ "grep" ]]```
 >>    * A little convoluted, but valid - I've had to use simliar before.
@@ -121,71 +121,109 @@ I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/r
 >> ```
 >>> ![int-only-connected-trunks-R](https://github.com/user-attachments/assets/eab52130-f95f-4b90-a893-d768a605f912)
 >>
+>> The next block is the remaining combination of connected/disconnected access/trunk interfaces.
+>> I'm not including screenshots for each because it will look the same as above.
+>> The `function trunks` includes a screenshot to demonstrate a simple use case for compliance.
 >> ```bash
->> # Display only DISCONNECTED trunk interfaces *THIS SHOULD RETURN THE GREP PATTERN, NO INTERFACES*:
+>> # Display full output of only DISCONNECTED TRUNK interfaces *THIS SHOULD RETURN THE GREP PATTERN, NO INTERFACES*:
 >>   sh int status|grep '^[[:alpha:]]{2}./.*not.*trunk'
->>
+>> # Display only the interfaces of DISCONNECTED TRUNKS *THIS SHOULD RETURN THE GREP PATTERN, NO INTERFACES*:
+>>   sh int status|grep '^[[:alpha:]]{2}./.*not.*trunk'|cut -d ' ' -f 1
+>> # Display full output of only CONNECTED ACCESS interfaces:
+>>   sh int status|grep '^[[:alpha:]]{2}.*/.*[[:blank:]]connected[[:blank:]]{4}[[:digit:]]'
+>> # Display only the interface of CONNECTED ACCESS interfaces:
+>>   sh int status|grep '^[[:alpha:]]{2}.*/.*[[:blank:]]connected[[:blank:]]{4}[[:digit:]]'|cut -d ' ' -f 1
+>> # Display full output of only DISONNECTED ACCESS interfaces:
+>>   sh int status|grep '^[[:alpha:]]{2}.*/.*[[:blank:]]notconnect.*[[:blank:]]{3}[[:digit:]]' 
+>> # Display only the interface of DISCONNECTED ACCESS interfaces:
+>>   sh int status|grep '^[[:alpha:]]{2}.*/.*[[:blank:]]notconnect.*[[:blank:]]{3}[[:digit:]]'|cut -d ' ' -f 1
+>> # Display the full output of CONNECTED ACCESS interfaces on vlan 84:
+>>   sh int status|grep '^[[:alpha:]]{2}./.*connected[[:blank:]]{4}84'
+>> # Display only the interface of CONNECTED ACCESS interfaces on vlan 84:
+>>   sh int status|grep '^[[:alpha:]]{2}./.*connected[[:blank:]]{4}84'| cut -d ' ' -f 1
+>> 
 >> # Lets take a look at a function to introduce a simple compliance usecase:
 >>   function trunks(){
->>    for t in `sh int status|grep '^[[:alpha:]]{2}./.*connected[[:blank:]]{4}trunk'| cut -d ' ' -f 1`; do printf '\nMy name is '"$t"' and I am a connected trunk\n'; done;
->>    for t in `sh int status|grep '^[[:alpha:]]{2}./.*not.*trunk'|cut -d ' ' -f 1`; do printf '\nDICONNECTED trunk: '"$t"'\n  Defaulting and reconfiguring as 802.1x access\n  SV-220667r991904\n  SV-220671r991908\n'; done;
+>>    for t in `sh int status|grep '^[[:alpha:]]{2}./.*connected[[:blank:]]{4}trunk'| cut -d ' ' -f 1`
+>>     do printf '\nMy name is '"$t"' and I am a connected trunk\n'; done;
+>>    for t in `sh int status|grep '^[[:alpha:]]{2}./.*not.*trunk'|cut -d ' ' -f 1`
+>>     do printf '\nDICONNECTED trunk: '"$t"'\n  Defaulting and reconfiguring as 802.1x access\n  SV-220667r991904\n  SV-220671r991908\n'; done;
 >>   }
 >> ```
 >>> ![stig-disconnected-trunks-func-R](https://github.com/user-attachments/assets/20c880f8-0c83-4c7c-bc9a-530f3c445724)
 >>
+> ### [ 2.3 ] <ins>Setup for FIPS check and config</ins> 🔎
+>> FIPS mode is *huge* in DoDIN compliance. Failure to run routers, switches, WLCs, etc. in FIPS mode results in:
+>>> * A CAT-1 per device discovered to not be in FIPS {rule ID varied by device family}
+>>> * A Key Indicator of Risk (KIOR)
+>>>   * KIORs were added in Command Cyber Readiness Inspection (CCRI 3.0)
+>>>   * If your enterprise recieves arbitrarily too many KIORs, your enterprise (state of Indiana in my case) will be disconnected
+>>>   * Certain KIORs are easy to remediate (non-secure services/protocols: FTP)
+>>>     * others are difficult (FIPS),
+>>>     * some are impossible (replacing EOL devices mid-CCRI).
+>>     
+>> What follows is the build up to a function to check for and configure FIPS. The steps are:
+>>> 1. Check if the switch is a stack:
+>>>    * If the switch is a stack, it must be unstacked, FIPS configured on each individual switch, then restacked..
+>>>    * Obviously, requires touch labor, can't proceed remotely through the script.     
+>>> 2. If non-stack, check if already running in FIPS mode.
+>>> 3. If already running FIPS, do nothing. If not running FIPS.
+>>> 4. Check for a FIPS key.
+>>>    * If there is a FIPS key, the switch just needs to be reloaded.
+>>>    * If there is no FIPS key, configure the key; reload the switch.
+>>    
+>> Let's check for a stack:     
 >> ```bash
->> # Display full output of only connected access interfaces:
->>   sh int status|grep '^[[:alpha:]]{2}.*/.*[[:blank:]]connected[[:blank:]]{4}[[:digit:]]'
- 
- # Display only the interface of connected access interfaces:
-    sh int status|grep '^[[:alpha:]]{2}.*/.*[[:blank:]]connected[[:blank:]]{4}[[:digit:]]'| cut -d ' ' -f 1
- 
- # Display full output of only disconnected access interfaces:
-    sh int status|grep '^[[:alpha:]]{2}.*/.*[[:blank:]]notconnect.*[[:blank:]]{3}[[:digit:]]'
- 
- # Display only the interface of disconnected access interfaces:
-    sh int status|grep '^[[:alpha:]]{2}.*/.*[[:blank:]]notconnect.*[[:blank:]]{3}[[:digit:]]'| cut -d ' ' -f 1
- 
- # Display the full output of connected access interfaces on vlan 112, failing authentication:
-    sh int status|grep '^[[:alpha:]]{2}./.*connected[[:blank:]]{4}112'
- 
- # Display only the interface of connected access interfaces on vlan 112, failing authentication:
-    sh int status|grep '^[[:alpha:]]{2}./.*connected[[:blank:]]{4}112'| cut -d ' ' -f 1
- #
-#_____________________________________________________________________________________________________________________________________________________________________________________________________________________|
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
- # Full: ( show switch	)
- # Shortest: sh sw
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
- #
- # Quickly tell if a switch is a stack:
-    sh sw | e \\*
-    # or
-    sh sw|grep ^[[:blank:]][[:digit:]]
- #
-#_____________________________________________________________________________________________________________________________________________________________________________________________________________________|
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
- # Full: ( show fips [authorization-key || status] )
- # Shortest: ( sh fip a || sh fip s )
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
- #
-    sh fip a
-    # "FIPS: No key installed."
+>> # Full: ( show switch	)
+>> # Shortest: sh sw
+>> # Quickly tell if a switch is a stack:
+>>   sh sw | e \\*
+>>   # or
+>>   sh sw|grep ^[[:blank:]][[:digit:]]
+>> ```
+>>> ![stack-sh-sw-e-R](https://github.com/user-attachments/assets/0c28ef97-98e6-4862-95d4-5dec5f44a908)    
+>>> ![stack-sh-sw-grep-R](https://github.com/user-attachments/assets/5ee3aef1-62cd-4b2a-b1eb-bcd4016c3ce7)     
+>>    
+>> Now, let's consider what we learned earlier about `if` tests directly on a command's return.
+>> `sh sw | e \\*` is going to give us trouble because, no matter what, it will always return the formatted Switch MAC & column headers.
+>> We can more easily work around a `grep` return than that default Cisco output.
+>> ```bash
+>> function stack(){
+>>  if [[ ! `sh sw|grep ^[[:blank:]][[:digit:]]` =~ "grep" ]]; then printf '\nSTACK\n';
+>>    else printf '\nNOT A STACK\n'; fi;
+>> }
+>> ```
+>>> ![not-a-stack-func-R](https://github.com/user-attachments/assets/5588f6b6-b561-45da-a068-5d0e7cd8b3ff)
+>>
+>> Sweet, not a stack - let's proceed to step 2. checking FIPS status and key:
+>> ```bash
+>> # Full: ( show fips [authorization-key || status] )
+>> # Shortest: ( sh fip a || sh fip s )
+>>   sh fip a
+>>    # "FIPS: No key installed."
+>>   sh fip s
+>>    # "Switch and Stacking are not running in fips mode"
+>> ```
+>>
+>> Easy enough, we'll check based on 'not' and 'no'. Let's skip ahead to the complete function:
+>> ```bash
+>> # Simple example function demonstrating the ability to directly test a commands return status:
+>> function fips(){
+>>  if [[ ! `sh sw|grep ^[[:blank:]][[:digit:]]` =~ "grep" ]]; then printf '\n\nSTACK\n';
+>>    else printf '\n\nNOT A STACK\n'
+>>     if [[ `sh fip s | i not` ]]; then printf '\nNot in FIPS mode: CAT-1 + KIOR\n';
+>>      if [[ `sh fip a | i no` ]]; then printf '\n  No FIPS Key configured\n'; 
+>>       else printf '\n  FIPS Key configured, reload to put in FIPS mode\n\n'; fi; 
+>>     else printf '\nFIPS mode enabled\n'; fi;
+>>  fi
+>> }
+>> ```
+>>> ![fips-func-R](https://github.com/user-attachments/assets/97eaf832-8888-43a7-8159-d18a2beb0a95)
+>>
+>> 
 
-    sh fip s
-    # "FIPS: No key installed."
-  #
-  # Simple example function demonstrating the ability to directly test a commands return status:
-    function fips(){
-      if [[ `sh fips s|grep not` ]]; then printf '\n\nOof, CAT 1: not in FIPS mode.. and a Key Indicator of Risk'; 
-        if [[ `sh fips a|grep no` ]]; then printf '\n\nNo FIPS Key configured either\n\n'; else printf '\n\nFIPS Key is configured, reload to put in FIPS mode\n\n'; fi; fi;
-    }
-  #
-#_____________________________________________________________________________________________________________________________________________________________________________________________________________________|
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
  # Full: ( show mac address table [ address <mac> || interface <Gi|Po|Te> || vlan <1-4094> ] )
  # Shortest: sh mac ad
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
  #
  # Return all information for only MAC addresses on a vlan number:
     sh mac ad | i _71
@@ -227,14 +265,8 @@ I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/r
     sh mac ad | i 1/0/14
     sh mac ad|grep 1/0/14
  #
-
-
-#Ln122
-#_____________________________________________________________________________________________________________________________________________________________________________________________________________________|
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
  # Full: ( show authentication sessions database [ interface <Gi|Po|Te> || mac <address> || method <dot1x|mab> ] { details } )
  # Shortest: sh auth ses
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
  #
  # Return auth session for a specific interface:
     sh auth ses int g1/0/1 
@@ -253,11 +285,8 @@ I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/r
  # Return formatted auth session details for MAB sessions:
     sh auth ses method mab detail | i Interface|MAC|IPv4|__Status:|Domain|Vlan|---|dot1x|mab|User-Name|Current Policy
  #
-#_____________________________________________________________________________________________________________________________________________________________________________________________________________________|
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
  # Full: ( show device-tracking database [ address <all|A.B.C.D> || interface <Gi|Te|Vlan> || mac <H.H.H|details> || vlanid <0-4096> ]	)
  # Shortest: sh device-t d
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
  #
  # sh :
     sh device-t d | i 605b.30
@@ -281,21 +310,15 @@ I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/r
     sh device-t d d|grep '(^D|^N|^A).*(access)'|cut -c 1-138
     sh device-t d d|grep '(^D|^N|^A).*(access[[:space:]]{5}[^7])'|cut -c 1-138
  #
-#_____________________________________________________________________________________________________________________________________________________________________________________________________________________|
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
  # Full: ( show ip arp inspection [ interfaces <Gi|Po|Te> || log || statistics || vlan <5,20,71,107,112> ] )
  # Shortest: sh ip ar ins
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
  #
  # sh :
     sh ip ar ins s|grep '(^ V|^ -|^[[:blank:]]{3}[2|7])'
 
  #
-#_____________________________________________________________________________________________________________________________________________________________________________________________________________________|
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
  # Full: ( show ip dhcp snooping [ binding <A.B.C.D|H.H.H|interface|vlan> || database {detail} || statistics {detail} ] )
  # Shortest: sh ip dh sn
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
  #
  # sh :
     sh ip dh sn s
@@ -305,29 +328,11 @@ I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/r
     sh ip dh sn b in g1/0/13
 
  #
-#_____________________________________________________________________________________________________________________________________________________________________________________________________________________|
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
  # Full: ( show ip source binding [ A.B.C.D || H.H.H || dhcp-snooping || interface || vlan ] )
  # Shortest: sh ip sou b
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
  #
  # sh :
     sh ip sou b|grep '(74:86:E2)'
     sh ip sou b | i 74:86:E2
 
  #
-#_____________________________________________________________________________________________________________________________________________________________________________________________________________________|
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-
-```   
-
-## [ SWCFG ](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWCFG.sh)
-```Bash
-
-```   
-
-
-## [ SWFIX ](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWFIX.sh)
-```Bash
-
-```   
