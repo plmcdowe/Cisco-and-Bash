@@ -186,8 +186,9 @@ I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/r
 >>> ![stack-sh-sw-grep-R](https://github.com/user-attachments/assets/5ee3aef1-62cd-4b2a-b1eb-bcd4016c3ce7)     
 >>    
 >> Now, let's consider what we learned earlier about `if` tests directly on a command's return.    
->> `sh sw | e \\*` is going to give us trouble because, no matter what, it will always return the formatted Switch MAC & column headers.    
->> We can more easily work around a `grep` return than that default Cisco output.    
+>> `sh sw | e \\*` is going to give us trouble.    
+>> No matter what, it will always return the formatted Switch MAC & column headers.    
+>> We can more easily work around a bum `grep` return than that default Cisco output.    
 >> ```bash
 >> function stack(){
 >>  if [[ ! `sh sw|grep ^[[:blank:]][[:digit:]]` =~ "grep" ]]; then printf '\nSTACK\n';
