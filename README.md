@@ -164,7 +164,7 @@ I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/r
 >>     
 >> What follows is the build up to a function to check for and configure FIPS. The steps are:
 >>> 1. Check if the switch is a stack:
->>>    * If the switch is a stack, it must be unstacked, FIPS configured on each individual switch, then restacked..
+>>>    * If a stack, it must be unstacked, FIPS configured on each individual switch, then restacked..
 >>>    * Obviously, requires touch labor, can't proceed remotely through the script.     
 >>> 2. If non-stack, check if already running in FIPS mode.
 >>> 3. If already running FIPS, do nothing. If not running FIPS.
