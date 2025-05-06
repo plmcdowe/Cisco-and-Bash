@@ -220,6 +220,6 @@ I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/r
 >> }
 >> ```
 >>> ![fips-func-R](https://github.com/user-attachments/assets/97eaf832-8888-43a7-8159-d18a2beb0a95)
-# Conclusion:    
+# Conclusion (for now):    
 #### There is so much more that can be handled by IOS.sh    
 #### I'll follow up with additional readme's in this repo and link to them at the top of this one.     
