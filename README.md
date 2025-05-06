@@ -98,7 +98,7 @@ I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/r
 >>    * Can be useful if you need the version later. But, limiting loops and conditions may reduce runtime.
 >>           
 >> 2. Use `!` for "not match": ```if [[ ! `sh ve|grep  '17.12.04a'` =~ "grep" ]]```
->>    * A little convoluted, but valid - I've had to use simliar before.
+>>    * A little convoluted, but valid - I've had to use similar constructs before.
 >>           
 >> 3. Use `i` for `include` instead of `grep` because Cisco's built in parser return's nothing.
 >>    * Likely the best option in this case: ```if [[ `sh ve | i 17.12.04a` ]]```
