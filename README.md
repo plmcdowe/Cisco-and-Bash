@@ -95,7 +95,7 @@ I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/r
 >>     
 >> So, 3 main ways to handle this, with additional options to implement that I won't dive into here:
 >> 1. Store the cmd return in a variable, then `if [[ "$V" != "grep" && $V =~ "17.12.04" ]]; then ...`
->>    * Can be useful if you need the version later, otherwise, `if` and `booleans` *marginally "slow"* things down.
+>>    * Can be useful if you need the version later. But, limiting loops and conditions may reduce runtime.
 >>           
 >> 2. Use `!` for "not match": ```if [[ ! `sh ve|grep  '17.12.04a'` =~ "grep" ]]```
 >>    * A little convoluted, but valid - I've had to use simliar before.
