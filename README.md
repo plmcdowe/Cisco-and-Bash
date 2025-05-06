@@ -154,9 +154,9 @@ I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/r
 >>
 > ### [ 2.3 ] <ins>Setup for FIPS check and config</ins> 🔎
 >> FIPS mode is *huge* in DoDIN compliance. Failure to run routers, switches, WLCs, etc. in FIPS mode results in:
->>> * A CAT-1 per device discovered to not be in FIPS {rule ID varied by device family}
+>>> * A CAT-1 per device discovered to not be in FIPS {rule IDs vary by device family}
 >>> * A Key Indicator of Risk (KIOR)
->>>   * KIORs were added in Command Cyber Readiness Inspection (CCRI 3.0)
+>>>   * KIORs were added in Command Cyber Readiness Inspection 3.0 (CCRI)
 >>>   * If your enterprise recieves arbitrarily too many KIORs,\
 >>>       your enterprise (state of Indiana in my case) will be disconnected.
 >>>   * Certain KIORs are easy to remediate (non-secure services/protocols: FTP)
