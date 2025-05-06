@@ -6,7 +6,7 @@
 
 ## [ 1 ] **Intro:**   
 IOS.sh has been available in Cisco since *early* IOS 15.    
-It is a shell environment that peels back the Cisco CLI, allowing many familiar Bash/Shell commands.   
+It is a shell environment that allows many familiar Bash/Shell commands, plus standard Cisco commands.   
 IOS.sh can be enabled epehmerally with: `terminal shell` from privileged exec.     
 Or, it can be configured as a permenant feature with:
 ```
