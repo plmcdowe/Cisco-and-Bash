@@ -168,7 +168,7 @@ I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/r
 >>>    * If a stack, it must be unstacked, FIPS configured on each individual switch, then restacked..
 >>>    * Obviously, requires touch labor, can't proceed remotely through the script.     
 >>> 2. If non-stack, check if already running in FIPS mode.
->>> 3. If already running FIPS, do nothing. If not running FIPS.
+>>> 3. If already running FIPS, do nothing. If not running FIPS...
 >>> 4. Check for a FIPS key.
 >>>    * If there is a FIPS key, the switch just needs to be reloaded.
 >>>    * If there is no FIPS key, configure the key; reload the switch.
