@@ -27,7 +27,7 @@ So, I put this readme togther with progressively more advanced examples and prac
 * [ SWFIX ](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWFIX.sh)      
 * 🚧 [ STIG-CHALLENGE ]()        
 * 🚧 [ RTRCFG ]()       
-* 🚧 [ CAPWAP ](https://github.com/plmcdowe/Cisco-and-Bash/tree/53d940e39f40956a277da862ff24b9367acd1c39/DHCP-Pool)       
+* [ CAPWAP ](https://github.com/plmcdowe/Cisco-and-Bash/tree/53d940e39f40956a277da862ff24b9367acd1c39/DHCP-Pool)       
      
 I won't be deliberately covering any regex basics.      
 At times, I may point out a basic regex concept for the sake of explaining IOS.sh mechanics.    
@@ -230,14 +230,48 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >> ```
 >>> ![fips-func-R](https://github.com/user-attachments/assets/97eaf832-8888-43a7-8159-d18a2beb0a95)
 ## [ 3 ] **DHCP Pool Function**     
-> ### [ 2.1 ] <ins>IOS Version</ins>    
->> ```Bash
->> # Full: ( show version )
->> # Shortest: sh ve
->> #
->> # Display all information about a switch or router:
->>   uname -a
->> ```
+> I needed to configure over 60 DHCP Pools on an IOS XE router, so I wrote the function CAPWAP.     
+> What the CAPWAP function does:
+>> 1. Read line for line with `more` from a file in bootflash, containing:
+>>    - Site Name (`$NAME`)
+>>    - Network IP (`$NET`)
+>>    - Network Mask (`$MASK`)
+>> 2. Use a running count of loops and a modulo test to "pause" the loop to:
+>>    - Calculate `$IP` from `$NET`
+>>    - Configure the `dhcp exluded address` and the `pool` with `network` and `default router`
+>>
+> I'll highlight the key bits here:
+> ```Bash
+> # Loop lines from file in bootflash:
+>   for l in `more bootflash:CAPWAPNETS`
+> 
+> # Constraining loops to total number of lines:
+>   if [[ "$n" -le "198" ]]
+>
+> # Modulo test:
+>   (( t = n % 3 ))
+>   if [[ ! "$t" == "0" ]]
+>   # I wanted to simply perform an if conditioned on return, with:
+>   #   if (( n % 3 ))
+>   # But, about a dozen variations of (( and [[ expansions later, and
+>   #   I am quite sure that IOS.sh has not fully implemented modulo %.
+>   # In the CLI, send 'man "((" to see the IOS.sh man page for arithmetic expansion.
+>   # The nearest alternative I could come up with for a divisibility test without storing in a variable is:
+>   if [[ "0" == ( n - ( n / 3 * 3 ) ) ]]
+>
+> # Break out each octet of the Network IP into a, b, c, d
+>   a=`echo $NET|cut -d "." -f 1`; b=`echo $NET|cut -d "." -f 2`; c=`echo $NET|cut -d "." -f 3`; d=`echo $NET|cut -d "." -f 4`;
+> ```
+> <ins>To sum it up</ins>:
+> * For line `l` in file, increment `n` by 1
+> * If `n` is less than or equal to 198, test for remainder of `n` by 3
+> * If there is a remainder, then `l` must contain either `SITENAME` or `NET IP`
+> * Else there is no remainder:
+>     * Then `l` is on 3rd and final loop of a site and contains `NET MASK`
+>     * Add 1 to last octet of `NET IP` for `Default Router`
+>     * Configure the DHCP Pool for that site
+> * Continue the loop
+      
 # Conclusion (for now):    
 #### There is so much more that can be handled by IOS.sh    
 #### I'll follow up with additional readme's in this repo and link to them at the top of this one.     
