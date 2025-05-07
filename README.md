@@ -22,15 +22,18 @@ The documentation from Cisco isn't *great*... and, posts I've found online are f
 * *hardly* scrape the surface of this feature's capabilities.       
 
 So, I put this readme togther with progressively more advanced examples and practical implementations.   
-These examples should help make better sense of the Shell environments [ SWCFG ](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWCFG.sh) and [ SWFIX ](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWFIX.sh) in this repository.         
+These examples should help make better sense of the Shell environments in this repository.         
+[ SWCFG ](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWCFG.sh) \
+[ SWFIX ](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWFIX.sh) \
+[ STIG-CHALLENGE ]()         
      
 I won't be deliberately covering any regex basics.      
 At times, I may point out a basic regex concept for the sake of explaining IOS.sh mechanics.    
-I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/regex-quickstart.php) | [ TLDP, Basic Regex ](https://tldp.org/LDP/Bash-Beginners-Guide/html/chap_04.html) | [ TLDP, Advanced Regex ](https://tldp.org/LDP/abs/html/abs-guide.html#REGEXP)     
+I highly recommend these excellent resources: [ REXEGG ](https://www.rexegg.com/regex-quickstart.php) | [ TLDP, Basic Regex ](https://tldp.org/LDP/Bash-Beginners-Guide/html/chap_04.html) | [ TLDP, Advanced Regex ](https://tldp.org/LDP/abs/html/abs-guide.html#REGEXP)     
 
 ---   
-## [ 2 ] **Examples**     
-> ### [ 2.1 ] <ins>IOS Version</ins> 🔎   
+## [ 2 ] **Intro Examples**     
+> ### [ 2.1 ] <ins>IOS Version</ins>    
 >> ```Bash
 >> # Full: ( show version )
 >> # Shortest: sh ve
@@ -105,7 +108,7 @@ I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/r
 >>     
 >>> ![sh-ve-inc-R](https://github.com/user-attachments/assets/b41e5b2c-dea3-4bf0-b1ee-4549bd9b452f)     
 > ---        
-> ### [ 2.2 ] <ins>Interfaces</ins> 🔎    
+> ### [ 2.2 ] <ins>Interfaces</ins>     
 >> ```bash
 >> # Full: ( show interface status )							
 >> # Shortest: sh int statu
@@ -152,7 +155,7 @@ I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/r
 >> ```
 >>> ![stig-disconnected-trunks-func-R](https://github.com/user-attachments/assets/20c880f8-0c83-4c7c-bc9a-530f3c445724)
 >>
-> ### [ 2.3 ] <ins>Setup for FIPS check and config</ins> 🔎
+> ### [ 2.3 ] <ins>Setup for FIPS check and config</ins> 
 >> FIPS mode is *huge* in DoDIN compliance. Failure to run routers, switches, WLCs, etc. in FIPS mode results in:
 >>> * A CAT-1 per device discovered to not be in FIPS {rule IDs vary by device family}
 >>> * A Key Indicator of Risk (KIOR)
@@ -220,6 +223,15 @@ I highly recommend these excellent resources: [ REXEG ](https://www.rexegg.com/r
 >> }
 >> ```
 >>> ![fips-func-R](https://github.com/user-attachments/assets/97eaf832-8888-43a7-8159-d18a2beb0a95)
+## [ 3 ] **DHCP Pool Function**     
+> ### [ 2.1 ] <ins>IOS Version</ins>    
+>> ```Bash
+>> # Full: ( show version )
+>> # Shortest: sh ve
+>> #
+>> # Display all information about a switch or router:
+>>   uname -a
+>> ```
 # Conclusion (for now):    
 #### There is so much more that can be handled by IOS.sh    
 #### I'll follow up with additional readme's in this repo and link to them at the top of this one.     
