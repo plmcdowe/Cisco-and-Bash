@@ -25,7 +25,9 @@ So, I put this readme togther with progressively more advanced examples and prac
 These examples should help make better sense of the Shell environments in this repository.         
 [ SWCFG ](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWCFG.sh) \
 [ SWFIX ](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWFIX.sh) \
-[ STIG-CHALLENGE ]()         
+[ STIG-CHALLENGE ]() 🚧 (not yet added)        
+[ RTRCFG ]() 🚧 (not yet added)       
+[ CAPWAP ]() 🚧 (not yet added)       
      
 I won't be deliberately covering any regex basics.      
 At times, I may point out a basic regex concept for the sake of explaining IOS.sh mechanics.    
