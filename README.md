@@ -1,6 +1,8 @@
 # Bash on Cisco IOS     
----    
-<img width="648" alt="ThisIsFine" src="https://github.com/user-attachments/assets/157a8b74-98f8-466f-bb77-176fa81c4725" />       
+|     |
+| --- |
+|_ _ _ _ _<img width="648" alt="ThisIsFine" src="https://github.com/user-attachments/assets/157a8b74-98f8-466f-bb77-176fa81c4725" />_ _ _ _ _|
+|     |    
 
 ---    
 
@@ -160,7 +162,7 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >>   }
 >> ```
 >>> ![stig-disconnected-trunks-func-R](https://github.com/user-attachments/assets/20c880f8-0c83-4c7c-bc9a-530f3c445724)
->>
+> ---        
 > ### ↘️[ 2.3 ] <ins>Setup for FIPS check and config</ins> 
 >> FIPS mode is *huge* in DoDIN compliance. Failure to run routers, switches, WLCs, etc. in FIPS mode results in:
 >>> * A CAT-1 per device discovered to not be in FIPS {rule IDs vary by device family}
@@ -228,6 +230,7 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >>  fi
 >> }
 >> ```
+> ---        
 >>> ![fips-func-R](https://github.com/user-attachments/assets/97eaf832-8888-43a7-8159-d18a2beb0a95)
 ## [ 3 ] **DHCP Pool Function**     
 > I needed to configure over 60 DHCP Pools on an IOS XE router, so I wrote the function CAPWAP.     
@@ -272,7 +275,4 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >     * Add 1 to last octet of `NET IP` for `Default Router`
 >     * Configure the DHCP Pool for that site
 > * Continue the loop
-      
-# Conclusion (for now):    
-#### There is so much more that can be handled by IOS.sh    
-#### I'll follow up with additional readme's in this repo and link to them at the top of this one.     
+
