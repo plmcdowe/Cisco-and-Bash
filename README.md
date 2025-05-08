@@ -151,7 +151,8 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >>     do printf '\nDISCONNECTED trunk: '"$t"'\n  Defaulting and reconfiguring as 802.1x access\n  SV-220667r991904\n  SV-220671r991908\n'; done;
 >>   }
 >> ```
->>> ![stig-disconnected-trunks-func-R](https://github.com/user-attachments/assets/20c880f8-0c83-4c7c-bc9a-530f3c445724)
+>>> ![stig-disconnected-trunks-func-R](https://github.com/user-attachments/assets/20c880f8-0c83-4c7c-bc9a-530f3c445724 "Can we agree to pretend that I didn't misspell disconnected?")
+>>> <sup><i>Can we agree to pretend that I didn't misspell disconnected?</i></sup>
 > ### ↘️[ 2.3 ] <ins>Setup for FIPS check and config</ins>:
 >> **FIPS mode is *huge* in DoDIN compliance.</br>Failure to run routers, switches, WLCs, etc. in FIPS mode results in:**
 >> - <b>A CAT-1 per device discovered to not be in FIPS {<i>rule IDs vary by device family for this finding</i>}</b>
@@ -244,12 +245,13 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 > # Modulo test:
 >   (( t = n % 3 ))
 >   if [[ ! "$t" == "0" ]]
->   # I wanted to simply perform an if conditioned on return, with:
->   #   if (( n % 3 ))
->   # But, about a dozen variations of (( and [[ expansions later, and
->   #   I am quite sure that IOS.sh has not fully implemented modulo %.
->   # In the CLI, send 'man "((" to see the IOS.sh man page for arithmetic expansion.
->   # The nearest alternative I could come up with for a divisibility test without storing in a variable is:
+>     # I wanted to simply perform an if conditioned on return, with:
+>     #   if (( n % 3 ))
+>     # But, roughly a dozen variations of (( and [[ expansions later, and
+>     #   I am quite sure that IOS.sh has not fully implemented modulo %.
+>     # In the CLI, send 'man "((" to see the IOS.sh man page for arithmetic expansion.
+> 
+>     # The nearest alt. I could come up with test without storing in a variable is:
 >   if [[ "0" == ( n - ( n / 3 * 3 ) ) ]]
 >
 > # Break out each octet of the Network IP into a, b, c, d
