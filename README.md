@@ -97,7 +97,7 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >> ```
 >>> ![sh-ve-grep-bad-cmd-R](https://github.com/user-attachments/assets/5ce67b27-a61d-44e7-bc8d-ea61c827c99b)    
 >>
->> ### *❗***There's the problem! It returns `grep [pattern that fails to match]`**
+>> ### *❗***There's the problem! It returns `grep 'pattern that fails to match'`**
 >> <b><ins>So, 3 main ways to handle this</ins>. (with additional options to implement that I won't dive into here)</b>
 >> 1. <b>Store the cmd return in a variable, then `if [[ "$V" != "grep" && $V =~ "17.12.04" ]]; then ...`</b>
 >>     * <b>Can be useful if you need the version later.</br>But, limiting loops and conditions may reduce runtime.</b>     
