@@ -1,7 +1,7 @@
 # Bash on Cisco IOS     
 |     |
 | --- |
-|_ _ _ _ _ _ _ _ _ _ <img width="648" alt="ThisIsFine" src="https://github.com/user-attachments/assets/157a8b74-98f8-466f-bb77-176fa81c4725" />_ _ _ _ _ _ _ _ _ _ |
+|_ _ _ _ _ _ _<img width="648" alt="ThisIsFine" src="https://github.com/user-attachments/assets/157a8b74-98f8-466f-bb77-176fa81c4725" />_ _ _ _ _ _ _|
 |     |    
 ## [ 1 ] **Intro:**   
 IOS.sh has been available in Cisco since *early* IOS 15.    
