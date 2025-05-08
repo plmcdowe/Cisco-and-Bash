@@ -153,27 +153,27 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >> ```
 >>> ![stig-disconnected-trunks-func-R](https://github.com/user-attachments/assets/20c880f8-0c83-4c7c-bc9a-530f3c445724)
 > ### ↘️[ 2.3 ] <ins>Setup for FIPS check and config</ins>:
->> **FIPS mode is *huge* in DoDIN compliance. Failure to run routers, switches, WLCs, etc. in FIPS mode results in:**
->>> - <b>A CAT-1 per device discovered to not be in FIPS {<i>rule IDs vary by device family for this finding</i>}</b>
->>> - <b>A Key Indicator of Risk (KIOR)</b>
->>>   - <b>KIORs were added in Command Cyber Readiness Inspection 3.0 (CCRI)</b>
->>>   - <b>if your enterprise recieves arbitrarily too many KIORs,</br></b>
->>>     <b>your enterprise (state of Indiana in my case) will be disconnected.</b>
->>>   - <b>certain KIORs are easy to remediate (non-secure services/protocols: FTP)</b>
->>>     - <b>others are difficult (FIPS)</b>
->>>     - <b>some are <i>nearly</i> impossible (replacing EOL devices mid-CCRI)</b>
+>> **FIPS mode is *huge* in DoDIN compliance.</br>Failure to run routers, switches, WLCs, etc. in FIPS mode results in:**
+>> - <b>A CAT-1 per device discovered to not be in FIPS {<i>rule IDs vary by device family for this finding</i>}</b>
+>> - <b>A Key Indicator of Risk (KIOR)</b>
+>>   - <b>KIORs were added in Command Cyber Readiness Inspection 3.0 (CCRI)</b>
+>>   - <b>if your enterprise recieves arbitrarily too many KIORs,</br></b>
+>>     <b>your enterprise (state of Indiana in my case) will be disconnected.</b>
+>>   - <b>certain KIORs are easy to remediate (non-secure services/protocols: FTP)</b>
+>>     - <b>others are difficult (FIPS)</b>
+>>     - <b>some are <i>nearly</i> impossible (replacing EOL devices mid-CCRI)</b>
 >>     
->> ####  Here is the build up to a function that checks for, and configures FIPS:
->>> 1. <b>Check if the switch is a stack:</b>
->>>     - <b>If a stack, it must be unstacked, FIPS configured on each individual switch, then restacked..</b>
->>>     - <b>Obviously, requires touch labor, can't proceed remotely through the script.</b>
->>> 2. <b>If non-stack, check if already running in FIPS mode.</b>
->>> 3. <b>If already running FIPS, do nothing. If not running FIPS...</b>
->>> 4. <b>Check for a FIPS key.</b>
->>>    - <b>If there is a FIPS key, the switch just needs to be reloaded.</b>
->>>    - <b>If there is no FIPS key, configure the key; reload the switch.</b>
+>> ####  Here is the outline of a function that checks for, and configures FIPS:
+>> 1. <b>Check if the switch is a stack:</b>
+>>     - <b>If a stack, it must be unstacked, FIPS configured on each individual switch, then restacked..</b>
+>>     - <b>Obviously, requires touch labor, can't proceed remotely through the script.</b>
+>> 2. <b>If non-stack, check if already running in FIPS mode.</b>
+>> 3. <b>If already running FIPS, do nothing. If not running FIPS...</b>
+>> 4. <b>Check for a FIPS key.</b>
+>>    - <b>If there is a FIPS key, the switch just needs to be reloaded.</b>
+>>    - <b>If there is no FIPS key, configure the key; reload the switch.</b>
 >>    
->> Let's check for a stack:     
+>> <b><ins>Let's check for a stack</ins>:</b>
 >> ```bash
 >> # Full: ( show switch	)
 >> # Shortest: sh sw
@@ -183,11 +183,14 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >>   sh sw|grep ^[[:blank:]][[:digit:]]
 >> ```
 >>> ![stack-sh-sw-e-R](https://github.com/user-attachments/assets/0c28ef97-98e6-4862-95d4-5dec5f44a908)    
->>> ![stack-sh-sw-grep-R](https://github.com/user-attachments/assets/5ee3aef1-62cd-4b2a-b1eb-bcd4016c3ce7)     
->> **Now, let's consider what we learned earlier about `if` tests directly on a command's return.**    
->> **`sh sw | e \\*` is going to give us trouble.**    
->> **No matter what, it will always return the formatted Switch MAC & column headers.**    
->> **We can more easily work around a bum `grep` return than that default Cisco output.**    
+>>> ![stack-sh-sw-grep-R](https://github.com/user-attachments/assets/5ee3aef1-62cd-4b2a-b1eb-bcd4016c3ce7)
+>>    
+>> **Now, let's consider what we learned earlier about `if` tests directly on a command's return.**
+>> 
+>> **`sh sw | e \\*` above, is going to give us trouble.**    
+>>   - <b>No matter what, it will always return the formatted Switch MAC & column headers.</b>
+>>
+>> <b><ins>We can more easily work around a bad `grep` return than the default Cisco output</ins>:</b>
 >> ```bash
 >> function stack(){
 >>  if [[ ! `sh sw|grep ^[[:blank:]][[:digit:]]` =~ "grep" ]]; then printf '\nSTACK\n';
@@ -195,7 +198,8 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >> }
 >> ```
 >>> ![not-a-stack-func-R](https://github.com/user-attachments/assets/5588f6b6-b561-45da-a068-5d0e7cd8b3ff)
->> **Sweet, not a stack - let's proceed to step 2. checking FIPS status and key:**    
+>> 
+>> <b><ins>Sweet, not a stack - let's proceed to step 2. checking FIPS status and key</ins>:</b>
 >> ```bash
 >> # Full: ( show fips [authorization-key || status] )
 >> # Shortest: ( sh fip a || sh fip s )
@@ -204,7 +208,7 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >>   sh fip s
 >>    # "Switch and Stacking are not running in fips mode"
 >> ```
->> **Easy enough, we'll check based on 'not' and 'no'. Let's skip ahead to the complete function:**     
+>> <b><ins>Easy enough, we'll check based on 'not' and 'no'. Let's skip ahead to the complete function</ins>:</b>
 >> ```bash
 >> function fips(){
 >>  if [[ ! `sh sw|grep ^[[:blank:]][[:digit:]]` =~ "grep" ]]; then printf '\n\nSTACK\n';
@@ -218,17 +222,18 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >> ```
 >>> ![fips-func-R](https://github.com/user-attachments/assets/97eaf832-8888-43a7-8159-d18a2beb0a95)
 ## [ 3 ] **<ins>DHCP Pool Function</ins>:**     
-> **I needed to configure over 60 DHCP Pools on an IOS XE router, so I wrote the function CAPWAP.**     
-> **<ins>What the CAPWAP function does</ins>:**
+> ### ↘️ I needed to configure over 60 DHCP Pools on an IOS XE router, so I wrote the function CAPWAP.
+>> **<ins>What the CAPWAP function does</ins>:**
 >> 1. Read line for line with `more` from a file in bootflash, containing:</b>
 >>    - <b>Site Name: as an all-caps string (stores in `$NAME` within the function)</b>
->>    - <b>Network IP: as a sting in octets (stores in `$NET` within the function)</b>
+>>    - <b>Network IP: as a string in octets (stores in `$NET` within the function)</b>
 >>    - <b>Network Mask: a string in octets (stores in `$MASK` within the function)</b>
 >>        - <b>[Note]: the CAPWAPNETS file in [ DHCP-Pools directory ](DHCP-Pool) has placeholder Net IPs and masks.</b>
->> 2. Use a running count of loops and a modulo test to "pause" the loop to:</b>
+>> 2. <b>Use a running count of loops and a modulo test to "pause" the loop to:</b>
 >>    - <b>Calculate `$IP` from `$NET`</b>
->>    - <b>Configure the `dhcp exluded address` and the `pool` with `network` and `default router`</b>
-> **I'll highlight the key bits here:**
+>>    - <b>Configure the `dhcp exluded address` and the `pool` with `network` and `default router`</b></br>
+>
+> <b><ins>I'll highlight the key bits here</ins>:</b>
 > ```Bash
 > # Loop lines from file in bootflash:
 >   for l in `more bootflash:CAPWAPNETS`
@@ -250,12 +255,12 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 > # Break out each octet of the Network IP into a, b, c, d
 >   a=`echo $NET|cut -d "." -f 1`; b=`echo $NET|cut -d "." -f 2`; c=`echo $NET|cut -d "." -f 3`; d=`echo $NET|cut -d "." -f 4`;
 > ```
-> **<ins>To sum it up</ins>:**
-> 1. <b>For line `l` in file, increment `n` by 1</b>
->     - <b>If `n` is less than or equal to 198, test for remainder of `n` by 3</b>
->     - <b>If there is a remainder, then `l` must contain either `SITENAME` or `NET IP`</b>
-> 2. <b>Else there is no remainder:</b>
->     - <b>Then `l` is on 3rd and final loop of a site and contains `NET MASK`</b>
->     - <b>Add 1 to last octet of `NET IP` for `Default Router`</b>
->     - <b>Configure the DHCP Pool for that site</b>
-> 3. <b>Continue the loop</b>
+> <b><ins>To sum it up</ins>:</b>
+>> 1. <b>For line `l` in file, increment `n` by 1</b>
+>>     - <b>If `n` is less than or equal to 198, test for remainder of `n` by 3</b>
+>>     - <b>If there is a remainder, then `l` must contain either `SITENAME` or `NET IP`</b>
+>> 2. <b>Else there is no remainder:</b>
+>>     - <b>Then `l` is on 3rd and final loop of a site and contains `NET MASK`</b>
+>>     - <b>Add 1 to last octet of `NET IP` for `Default Router`</b>
+>>     - <b>Configure the DHCP Pool for that site</b>
+>> 3. <b>Continue the loop</b>
