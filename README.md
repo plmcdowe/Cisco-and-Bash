@@ -89,7 +89,7 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >>    else printf 'not compliant'; fi;
 >>   }
 >> ```
->> ### 🔎 Our pattern is anchored with the "$" so it should return 'not compliant' - a literal 17.12.04 will not match the returned 17.12.04a, but you can see in the output that our condition tested true!
+>> ### 🔎 Our pattern is anchored with the "$" so it should return 'not compliant'.</br>A literal 17.12.04 will not match the returned 17.12.04a, but you can see in the output that our condition tested true!
 >>> ![sh-ve-grep-bad-R](https://github.com/user-attachments/assets/32214d07-bc76-4bbb-b158-af5c3f8d9ba4)       
 >> ```bash
 >> # Let's try only the command in CLI:
