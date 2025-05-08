@@ -27,7 +27,7 @@ So, I put this readme togther with progressively more advanced examples and prac
 * [ SWFIX ](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWFIX.sh)      
 * 🚧 [ STIG-CHALLENGE ]()        
 * 🚧 [ RTRCFG ]()       
-* [ CAPWAP ](https://github.com/plmcdowe/Cisco-and-Bash/tree/53d940e39f40956a277da862ff24b9367acd1c39/DHCP-Pool)       
+* [ CAPWAP ](https://github.com/plmcdowe/Cisco-and-Bash/tree/fc4dc301a5ceb7108a0e45faa3f0f25abffe5942/DHCP-Pool)       
      
 I won't be deliberately covering any regex basics.      
 At times, I may point out a basic regex concept for the sake of explaining IOS.sh mechanics.    
@@ -39,7 +39,7 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 
 ---   
 ## [ 2 ] **Intro Examples**     
-> ### [ 2.1 ] <ins>IOS Version</ins>    
+> ### ↘️[ 2.1 ] <ins>IOS Version</ins>    
 >> ```Bash
 >> # Full: ( show version )
 >> # Shortest: sh ve
@@ -100,9 +100,9 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >> ```
 >>> ![sh-ve-grep-bad-cmd-R](https://github.com/user-attachments/assets/5ce67b27-a61d-44e7-bc8d-ea61c827c99b)    
 >>
->> There's the problem! It returns `grep [pattern that fails to match]`
+>> *❗***There's the problem! It returns `grep [pattern that fails to match]`**
 >>     
->> So, 3 main ways to handle this, with additional options to implement that I won't dive into here:
+>> <ins>So, 3 main ways to handle this</ins>. (with additional options to implement that I won't dive into here)
 >> 1. Store the cmd return in a variable, then `if [[ "$V" != "grep" && $V =~ "17.12.04" ]]; then ...`
 >>    * Can be useful if you need the version later. But, limiting loops and conditions may reduce runtime.
 >>           
@@ -114,7 +114,7 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >>     
 >>> ![sh-ve-inc-R](https://github.com/user-attachments/assets/b41e5b2c-dea3-4bf0-b1ee-4549bd9b452f)     
 > ---        
-> ### [ 2.2 ] <ins>Interfaces</ins>     
+> ### ↘️[ 2.2 ] <ins>Interfaces</ins>     
 >> ```bash
 >> # Full: ( show interface status )							
 >> # Shortest: sh int statu
@@ -161,7 +161,7 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >> ```
 >>> ![stig-disconnected-trunks-func-R](https://github.com/user-attachments/assets/20c880f8-0c83-4c7c-bc9a-530f3c445724)
 >>
-> ### [ 2.3 ] <ins>Setup for FIPS check and config</ins> 
+> ### ↘️[ 2.3 ] <ins>Setup for FIPS check and config</ins> 
 >> FIPS mode is *huge* in DoDIN compliance. Failure to run routers, switches, WLCs, etc. in FIPS mode results in:
 >>> * A CAT-1 per device discovered to not be in FIPS {rule IDs vary by device family}
 >>> * A Key Indicator of Risk (KIOR)
@@ -231,11 +231,12 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >>> ![fips-func-R](https://github.com/user-attachments/assets/97eaf832-8888-43a7-8159-d18a2beb0a95)
 ## [ 3 ] **DHCP Pool Function**     
 > I needed to configure over 60 DHCP Pools on an IOS XE router, so I wrote the function CAPWAP.     
-> What the CAPWAP function does:
+> <ins>What the CAPWAP function does</ins>:
 >> 1. Read line for line with `more` from a file in bootflash, containing:
->>    - Site Name (`$NAME`)
->>    - Network IP (`$NET`)
->>    - Network Mask (`$MASK`)
+>>    - Site Name: as an all-caps string (stores in `$NAME` within the function)
+>>    - Network IP: as a sting in octets (stores in `$NET` within the function)
+>>    - Network Mask: a string in octets (stores in `$MASK` within the function)
+>>      [Note]: the CAPWAPNETS file in [ DHCP-Pools directory ](DHCP-Pool) has placeholder Net IPs and masks.     
 >> 2. Use a running count of loops and a modulo test to "pause" the loop to:
 >>    - Calculate `$IP` from `$NET`
 >>    - Configure the `dhcp exluded address` and the `pool` with `network` and `default router`
