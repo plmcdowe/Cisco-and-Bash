@@ -100,7 +100,7 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >> ### *❗***There's the problem! It returns `grep [pattern that fails to match]`**
 >> <b><ins>So, 3 main ways to handle this</ins>. (with additional options to implement that I won't dive into here)</b>
 >> 1. <b>Store the cmd return in a variable, then `if [[ "$V" != "grep" && $V =~ "17.12.04" ]]; then ...`</b>
->>     * <b>Can be useful if you need the version later. But, limiting loops and conditions may reduce runtime.</b>     
+>>     * <b>Can be useful if you need the version later.</br>But, limiting loops and conditions may reduce runtime.</b>     
 >> 2. <b>Use `!` for "not match": ```if [[ ! `sh ve|grep  '17.12.04a'` =~ "grep" ]]```</b>
 >>     * <b>A little convoluted, but valid - I've had to use similar constructs before.</b>     
 >> 3. <b>Use `i` for `include` instead of `grep` because Cisco's built in parser return's nothing.</b>
