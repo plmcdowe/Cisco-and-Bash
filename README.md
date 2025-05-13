@@ -28,7 +28,8 @@ So, I put this readme togther with progressively more advanced examples and prac
 - environment [SWCFG](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWCFG.sh)       
 - environment [SWFIX](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWFIX.sh)
 - environment [CAPWAP](https://github.com/plmcdowe/Cisco-and-Bash/tree/fc4dc301a5ceb7108a0e45faa3f0f25abffe5942/DHCP-Pool)
-- environment [RTRCFG](https://github.com/plmcdowe/Cisco-and-Bash/tree/e0e4f82315d671b934fce4cb8525d6febec6ed69/Router-Config) documented below at [\[ 4 \] RTRCFG](https://github.com/plmcdowe/Cisco-and-Bash/edit/main/README.md#-4--rtrcfg)       
+- environment [RTRCFG](https://github.com/plmcdowe/Cisco-and-Bash/tree/e0e4f82315d671b934fce4cb8525d6febec6ed69/Router-Config)
+  - documented below at [\[ 4 \] RTRCFG](https://github.com/plmcdowe/Cisco-and-Bash/tree/main#-4--rtrcfg)       
 - 🚧 [STIG-CHALLENGE]()
 - 🚧 [TRAINING-TROUBLESHOOTING]()        
 
