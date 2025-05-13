@@ -28,8 +28,9 @@ So, I put this readme togther with progressively more advanced examples and prac
 - environment [SWCFG](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWCFG.sh)       
 - environment [SWFIX](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWFIX.sh)
 - environment [CAPWAP](https://github.com/plmcdowe/Cisco-and-Bash/tree/fc4dc301a5ceb7108a0e45faa3f0f25abffe5942/DHCP-Pool)
+  - <i>documented below at</i>: [\[ 3 \] DHCP Pool Function](https://github.com/plmcdowe/Cisco-and-Bash/blob/main/README.md#-3--dhcp-pool-function)
 - environment [RTRCFG](https://github.com/plmcdowe/Cisco-and-Bash/tree/e0e4f82315d671b934fce4cb8525d6febec6ed69/Router-Config)
-  - documented below at [\[ 4 \] RTRCFG](https://github.com/plmcdowe/Cisco-and-Bash/tree/main#-4--rtrcfg)       
+  - <i>documented below at</i>: [\[ 4 \] RTRCFG](https://github.com/plmcdowe/Cisco-and-Bash/tree/main#-4--rtrcfg)       
 - 🚧 [STIG-CHALLENGE]()
 - 🚧 [TRAINING-TROUBLESHOOTING]()        
 
@@ -269,7 +270,7 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >>     - <b>Configure the DHCP Pool for that site</b>
 >> 3. <b>Continue the loop</b>
 ## [ 4 ] **<ins>RTRCFG</ins>:**     
-> ### ↘️ Completely configure a blank IOS 17.12 C8300 router with 3 files.
+> ### ↘️ Completely configure a blank IOS 17.12 C8300 router with 3 files in +/- 10 seconds.
 > 
 > <b>[RTRCFG.sh](https://github.com/plmcdowe/Cisco-and-Bash/blob/e0e4f82315d671b934fce4cb8525d6febec6ed69/Router-Config/RTRCFG.sh): <b>The <i>shell environment</i> with the Bash function that:</b>
 >> 1. <b>Reads in and displays all available site names with `cat bootflash:SiteNames`</b>
