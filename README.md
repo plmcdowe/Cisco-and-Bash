@@ -25,11 +25,11 @@ I chose the `shell processing full` route.
 So, I put this readme togther with progressively more advanced examples and practical implementations.   
 
 <ins>The examples in this README should help make sense of the Shell environments in the repository</ins>:
-- environment [ SWCFG ](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWCFG.sh)      
+- environment [ SWCFG ](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWCFG.sh)       
 - environment [ SWFIX ](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWFIX.sh)
 - environment [ CAPWAP ](https://github.com/plmcdowe/Cisco-and-Bash/tree/fc4dc301a5ceb7108a0e45faa3f0f25abffe5942/DHCP-Pool)       
 - 🚧 [ STIG-CHALLENGE ]()        
-- 🚧 [ RTRCFG ]()       
+- environment [ RTRCFG ](https://github.com/plmcdowe/Cisco-and-Bash/tree/e0e4f82315d671b934fce4cb8525d6febec6ed69/Router-Config)       
 
 You may notice that the shell environments in the repository are saved with the shell <i>'.sh'</i> extension.     
 I only saved these as shell files for presentation in GitHub. In production, I save them as extentionless files.     
@@ -225,7 +225,7 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 ## [ 3 ] **<ins>DHCP Pool Function</ins>:**     
 > ### ↘️ I needed to configure over 60 DHCP Pools on an IOS XE router, so I wrote the function CAPWAP.
 >> **<ins>What the CAPWAP function does</ins>:**
->> 1. Read line for line with `more` from a file in bootflash, containing:</b>
+>> 1. <b>Read line for line with `more` from a file in bootflash, containing:</b>
 >>    - <b>Site Name: as an all-caps string (stores in `$NAME` within the function)</b>
 >>    - <b>Network IP: as a string in octets (stores in `$NET` within the function)</b>
 >>    - <b>Network Mask: a string in octets (stores in `$MASK` within the function)</b>
@@ -266,3 +266,122 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >>     - <b>Add 1 to last octet of `NET IP` for `Default Router`</b>
 >>     - <b>Configure the DHCP Pool for that site</b>
 >> 3. <b>Continue the loop</b>
+## [ 4 ] **<ins>RTRCFG</ins>:**     
+> ### ↘️ Completely configure a blank IOS 17.12 C8300 router with 3 files.
+> **<ins>Files in the Router-Config directory</ins>:**     
+> <b>[RTRCFG.sh](https://github.com/plmcdowe/Cisco-and-Bash/blob/e0e4f82315d671b934fce4cb8525d6febec6ed69/Router-Config/RTRCFG.sh): <b>The <i>shell environment</i> with the Bash function that:</b>
+>> 1. <b>Reads in and displays all available site names with `cat bootflash:SiteNames`</b>
+>> 2. <b>Reads in user input of site name as `$s`:</b>
+>>     - <b>If `$s` is only capital letters 3 to 17 characters in length:</b>
+>>       - <b>If `grep $s bootflash:SiteNames` is true:</b>
+>>         - <b>Read in and store all IP's and masks from `more bootflash:SiteNets`</b>
+>>       - <b>If `grep $s bootflash:SiteNames` is false:</b>
+>>         - <b>Print error & call `RTRCFG` again</b>
+>>     - <b>If `$s` is not only capital letters 3 to 17 characters in length:</b>    
+>>       - <b>print error and call `RTRCFG` again</b>
+>> 3. <b>With all networks stored:</b>
+>>     - <b>Performs string manipulation to calulate Default Router IP's from Network IP's</b>    
+>
+> <b>[SiteNets](https://github.com/plmcdowe/Cisco-and-Bash/blob/e0e4f82315d671b934fce4cb8525d6febec6ed69/Router-Config/RTRCFG.sh):    
+>> <b>extension-less file follwing the <i>sanitized</i> format below:</b>     
+>> <sup><i>the `#` commented variable names are not in production, and only for correlating to the function in `RTRFCG`</i></sup>     
+>> ```bash
+>> UNIQUESITENAME       # $HOSTNAME
+>> 123                  # unique $SITE_ID from 4th octet of MGMT/DMVPN
+>> ISP.RTR.IP.IP        # $ISP_IP
+>> ISP.NET.MASK.NET     # $ISP_MASK
+>> ISP.GW.IP.IP         # $ISP_GW
+>> PM1.RTR.NET.IP       # $PM1_NET
+>> PM1.NET.MASK.NET     # $PM1_MASK
+>> IOT1.RTR.NET.IP      # $IOT1_NET
+>> IOT1.NET.MASK.NET    # $IOT1_MASK
+>> VOIP.RTR.NET.IP      # $VOIP_NET
+>> VOIP.NET.MASK.NET    # $VOIP_MASK
+>> DATA1.RTR.NET.IP     # $DATA1_NET
+>> DATA1.NET.MASK.NET   # $DATA1_MASK
+>> DATA2.RTR.NET.IP     # $DATA2_NET
+>> DATA2.NET.MASK.NET   # $DATA2_MASK
+>> PM2.RTR.NET.IP       # $PM2_NET
+>> PM2.NET.MASK.NET     # $PM2_MASK
+>> IOT2.RTR.NET.IP      # $IOT2_NET
+>> IOT2.NET.MASK.NET    # $IOT2_MASK
+>> PRINT.RTR.NET.IP     # $PRINT_NET
+>> PRINT.NET.MASK.NET   # $PRINT_MASK
+>> IOT3.RTR.NET.IP      # $IOT3_NET
+>> IOT3.NET.MASK.NET    # $IOT3_MASK
+>> MGMT.RTR.NET.IP      # $MGMT_NET
+>> MGMT.NET.MASK.NET    # $MGMT_MASK
+>> CAPWAP.RTR.NET.IP    # $CAPWAP_NET
+>> CAPWAP.NET.MASK.NET  # $CAPWAP_MASK
+>> Lo.DMVPN.NET.IP      # $LO_DMVPN_IP
+>> Lo.DMVPN.MASK.NET    # $LO_DMVPN_MASK
+>> Lo.MGMT.NET.IP       # $LO_MGMT_IP
+>> Lo.MGMT.MASK.NET     # $LO_MGMT_MASK
+>> UNIQUESITENAME       # $HOSTNAME
+>> # .
+>> # . cut, but repeats for as many sites as necessary
+>> # .
+>> ```
+> <b><ins>I'll highlight the key bits from `RTRCFG` here</ins>:</b>
+> ```Bash
+> function RTRCFG()
+> {
+>  t=0
+>  c=0
+>  cat bootflash:SiteNames
+>  printf '\n\nCopy & Paste from above into the prompt below.\n'
+>  read -p ": " s
+>  if [[ -z "$s" || ( ! $s =~ '^[A-Z]{3,17}$' ) ]]
+>   then  printf '\nIncorrect input!\n'
+>   sleep 2
+>   RTRCFG
+>   else printf ''
+>   if [[ `grep $s bootflash:SiteNames` ]]
+>    then for l in `more bootflash:SiteNets`
+>     do if [[ "$l" == "$s" ]]
+>      then t="TRUE"
+>     fi
+>     if [[ "$t" == "TRUE" ]]
+>      then (( c++ ))
+>      if [[ "$c" -le "31" ]]
+>       then if [[ "$c" == "1" ]]
+>        then HOSTNAME="$l"
+>       fi
+>       if [[ "$c" == "2" ]]
+>        then SITE_ID="$l"
+>       fi
+>       if [[ "$c" == "3" ]]
+>        then ISP_IP="$l"
+>       # .
+>       # . cut for length
+>       # .
+>       if [[ "$c" == "31" ]]
+>        then LO_MGMT_MASK="$l"
+>       fi
+>       else break
+>      fi
+>     fi
+>    done
+>    # String manipulation to calulate default router IP's
+>    a=`echo $PM1_NET|cut -d "." -f 1`
+>    b=`echo $PM1_NET|cut -d "." -f 2`
+>    c=`echo $PM1_NET|cut -d "." -f 3`
+>    d=`echo $PM1_NET|cut -d "." -f 4`
+>    (( d = d + 1 ))
+>    PM1_IP="$a.$b.$c.$d"
+>    a=`echo $IOT1_NET|cut -d "." -f 1`
+>    b=`echo $IOT1_NET|cut -d "." -f 2`
+>    c=`echo $IOT1_NET|cut -d "." -f 3`
+>    d=`echo $IOT1_NET|cut -d "." -f 4`
+>    (( d = d + 1 ))
+>    IOT1_IP="$a.$b.$c.$d"
+>    a=`echo $VOIP_NET|cut -d "." -f 1`
+>    b=`echo $VOIP_NET|cut -d "." -f 2`
+>    c=`echo $VOIP_NET|cut -d "." -f 3`
+>    d=`echo $VOIP_NET|cut -d "." -f 4`
+>    (( d = d + 1 ))
+>    VOIP_IP="$a.$b.$c.$d"      
+>    # .
+>    # . cut for length
+>    # .   
+> ```
