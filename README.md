@@ -322,7 +322,7 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >> # . cut, but repeats for as many sites as necessary
 >> # .
 >> ```
-> <b>[SiteNames](https://github.com/plmcdowe/Cisco-and-Bash/blob/d2d989c7516cf71e85fa03b716bd47677cfd4a4a/Router-Config/SiteNames): <b>extension-less file follwing the <i>sanitized</i> format below:</b>     
+> <b>[SiteNames](https://github.com/plmcdowe/Cisco-and-Bash/blob/d2d989c7516cf71e85fa03b716bd47677cfd4a4a/Router-Config/SiteNames): <b>extensionless file follwing the <i>sanitized</i> format below:</b>     
 >> ```bash
 >> ATLANTA       DETROIT         JACKSONVILLE    MINNEAPOLIS     PORTLAND        SONOMA
 >> AUSTIN        DOVER           KINGSTON        MONACO          PRAGUE          SPA
