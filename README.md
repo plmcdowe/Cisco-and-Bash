@@ -268,7 +268,7 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >> 3. <b>Continue the loop</b>
 ## [ 4 ] **<ins>RTRCFG</ins>:**     
 > ### ↘️ Completely configure a blank IOS 17.12 C8300 router with 3 files.
-> **<ins>Files in the Router-Config directory</ins>:**     
+> 
 > <b>[RTRCFG.sh](https://github.com/plmcdowe/Cisco-and-Bash/blob/e0e4f82315d671b934fce4cb8525d6febec6ed69/Router-Config/RTRCFG.sh): <b>The <i>shell environment</i> with the Bash function that:</b>
 >> 1. <b>Reads in and displays all available site names with `cat bootflash:SiteNames`</b>
 >> 2. <b>Reads in user input of site name as `$s`:</b>
@@ -282,8 +282,7 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >> 3. <b>With all networks stored:</b>
 >>     - <b>Performs string manipulation to calulate Default Router IP's from Network IP's</b>    
 >
-> <b>[SiteNets](https://github.com/plmcdowe/Cisco-and-Bash/blob/e0e4f82315d671b934fce4cb8525d6febec6ed69/Router-Config/RTRCFG.sh):    
->> <b>extension-less file follwing the <i>sanitized</i> format below:</b>     
+> <b>[SiteNets](https://github.com/plmcdowe/Cisco-and-Bash/blob/9e954d4ac55003f3c1911e3dbde1994a4c2829e8/Router-Config/SiteNets): <b>extension-less file follwing the <i>sanitized</i> format below:</b>     
 >> <sup><i>the `#` commented variable names are not in production, and only for correlating to the function in `RTRFCG`</i></sup>     
 >> ```bash
 >> UNIQUESITENAME       # $HOSTNAME
