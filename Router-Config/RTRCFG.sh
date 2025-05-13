@@ -79,10 +79,10 @@ function RTRCFG()
        then PM2_MASK="$l"
       fi
       if [[ "$c" == "18" ]]
-       then !IOT2_NET="$l"
+       then IOT2_NET="$l"
       fi
       if [[ "$c" == "19" ]]
-       then !IOT2_MASK="$l"
+       then IOT2_MASK="$l"
       fi
       if [[ "$c" == "20" ]]
        then PRINT_NET="$l"
@@ -165,7 +165,7 @@ function RTRCFG()
    c=`echo $IOT2_NET|cut -d "." -f 3`
    d=`echo $IOT2_NET|cut -d "." -f 4`
    (( d = d + 1 ))
-   !IOT2_IP="$a.$b.$c.$d"
+   IOT2_IP="$a.$b.$c.$d"
    a=`echo $PRINT_NET|cut -d "." -f 1`
    b=`echo $PRINT_NET|cut -d "." -f 2`
    c=`echo $PRINT_NET|cut -d "." -f 3`
