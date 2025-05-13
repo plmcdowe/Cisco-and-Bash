@@ -25,11 +25,12 @@ I chose the `shell processing full` route.
 So, I put this readme togther with progressively more advanced examples and practical implementations.   
 
 <ins>The examples in this README should help make sense of the Shell environments in the repository</ins>:
-- environment [ SWCFG ](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWCFG.sh)       
-- environment [ SWFIX ](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWFIX.sh)
-- environment [ CAPWAP ](https://github.com/plmcdowe/Cisco-and-Bash/tree/fc4dc301a5ceb7108a0e45faa3f0f25abffe5942/DHCP-Pool)       
-- 🚧 [ STIG-CHALLENGE ]()        
-- environment [ RTRCFG ](https://github.com/plmcdowe/Cisco-and-Bash/tree/e0e4f82315d671b934fce4cb8525d6febec6ed69/Router-Config)       
+- environment [SWCFG](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWCFG.sh)       
+- environment [SWFIX](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWFIX.sh)
+- environment [CAPWAP](https://github.com/plmcdowe/Cisco-and-Bash/tree/fc4dc301a5ceb7108a0e45faa3f0f25abffe5942/DHCP-Pool)
+- environment [RTRCFG](https://github.com/plmcdowe/Cisco-and-Bash/tree/e0e4f82315d671b934fce4cb8525d6febec6ed69/Router-Config)       
+- 🚧 [STIG-CHALLENGE]()
+- 🚧 [TRAINING-TROUBLESHOOTING]()        
 
 You may notice that the shell environments in the repository are saved with the shell <i>'.sh'</i> extension.     
 I only saved these as shell files for presentation in GitHub. In production, I save them as extentionless files.     
@@ -38,10 +39,10 @@ But, they will run in IOS.sh as <i>'.sh'</i> files, as well.
 I won't be deliberately covering any regex basics.      
 At times, I may point out a basic regex concept for the sake of explaining IOS.sh mechanics.    
     
-<i>I highly recommend these excellent resources</i>:
-- [ REXEGG ](https://www.rexegg.com/regex-quickstart.php)    
-- [ TLDP, Basic Regex ](https://tldp.org/LDP/Bash-Beginners-Guide/html/chap_04.html)     
-- [ TLDP, Advanced Regex ](https://tldp.org/LDP/abs/html/abs-guide.html#REGEXP)     
+<i>I highly recommend these excellent resources</i>:     
+[REXEGG](https://www.rexegg.com/regex-quickstart.php)    
+[TLDP, Basic Regex](https://tldp.org/LDP/Bash-Beginners-Guide/html/chap_04.html)     
+[TLDP, Advanced Regex](https://tldp.org/LDP/abs/html/abs-guide.html#REGEXP)     
 
 ## [ 2 ] **Intro Examples**     
 > ### ↘️[ 2.1 ] <ins>IOS Version</ins>:    
