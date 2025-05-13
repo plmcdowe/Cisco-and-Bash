@@ -321,6 +321,20 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >> # . cut, but repeats for as many sites as necessary
 >> # .
 >> ```
+> <b>[SiteNames](https://github.com/plmcdowe/Cisco-and-Bash/blob/d2d989c7516cf71e85fa03b716bd47677cfd4a4a/Router-Config/SiteNames): <b>extension-less file follwing the <i>sanitized</i> format below:</b>     
+>> ```bash
+>> ATLANTA       DETROIT         JACKSONVILLE    MINNEAPOLIS     PORTLAND        SONOMA
+>> AUSTIN        DOVER           KINGSTON        MONACO          PRAGUE          SPA
+>> BERLIN        DUBLIN          LEMANS          MONZA           RICHMOND        TALLADEGA
+>> BIRMINGHAM    EDINBURGH       LIVERPOOL       MONTREAL        RIODEJANEIRO    TOKYO
+>> BRISTOL       FLORENCE        LONDON          MUMBAI          ROME            TORONTO
+>> CHARLOTTE     GLASGOW         LOSANGELES      NASHVILLE       SALZBURG        VIENNA
+>> CHENNAI       GARY            LOUISVILLE      NEWORLEANS      SANDIEGO        WASHINGTON
+>> CHICAGO       HAVANA          MANCHESTER      NEWYORK         SANFRANCISCO    WOODSTOCK
+>> CLEVELAND     HOUSTON         MELBOURNE       OSAKA           SEATTLE         YOKOHAMA
+>> DALLAS        INDIANAPOLIS    MEMPHIS         PARIS           SEBRING         ZANDVOORT
+>> DAYTONA       ISTANBUL        MIAMI           PHILADELPHIA    SILVERSTONE     ZURICH
+>> ```
 > <b><ins>I'll highlight the key bits from `RTRCFG` here</ins>:</b>
 > ```Bash
 > function RTRCFG()
@@ -382,5 +396,6 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >    VOIP_IP="$a.$b.$c.$d"      
 >    # .
 >    # . cut for length
->    # .   
+>    # .
+>    # Once all variables are set, the router configuration begins.
 > ```
