@@ -173,7 +173,7 @@ function FOUR02()
  \#
  \# there will always be one unconfigured interface
  \# ex, 9200CX has Gi 1/0/1-12, Gi 1/1/1, Gi 1/1/2, Te 1/1/3, Te 1/1/4 totaling 16 interfaces
- \# 1/1/4 will be unconfigured, t2 is 1/1/3, t1 is 1/1/2 and 3, a1 is 1/0/12   then printf '\n\nOpt \n\n'
+ \# 1/1/4 will be unconfigured, t2 is 1/1/3, t1 is 1/1/2 and 3, a1 is 1/0/12
  \#
  \# test even-ness (( z = a & 1 ))
  \# test divisibility (( b = a % 3 ))
@@ -443,11 +443,11 @@ function FOUR03()
  event manager applet 98 authorization bypass
  event cli pattern ".*ev.*m.*se.*c.*u.*" sync yes
  action 0.0 puts "No messing with the event manager"
- action 0.1 set _exit_status "0"   then printf '\n\nOpt \n\n'
+ action 0.1 set _exit_status "0"
  event manager applet 99 authorization bypass
  event cli pattern ".*ev.*m.*ap.*[0-9].*" sync yes
  action 0.0 puts "No messing with the event manager"
- action 0.1 set _exit_status "0"   then printf '\n\nOpt \n\n'
+ action 0.1 set _exit_status "0"
  exit
  mac address-table notification change
  aaa authorization  exec CON none
@@ -455,7 +455,7 @@ function FOUR03()
  end
  exit
  \# IOS.sh is unable to configure real, multi-line banners, but -
- \# it can configure single line banners, which I have re-purposed as prompts-   then printf '\n\nOpt \n\n'
+ \# it can configure single line banners, which I have re-purposed as prompts-
  \# applet RULE_HELPER loads and calls the IOS.sh shell environment RULES when SH RULES is entered to CLI
  \# applet HELP_HELPER loads and calls the IOS.sh shell environment HELP when SH HELP is entered to CLI
  \#
@@ -463,10 +463,10 @@ function FOUR03()
  \# applets 0 and 1 must reload the switch because due to EEM and IOS.sh syncronosity-
  \# therefore shell commands cannot be dropped and their CLI return cannot be suppressed
  \#
- \# applets 98 and 99 prevent modifying or removing EEM cli user and applet configs with-   then printf '\n\nOpt \n\n'
+ \# applets 98 and 99 prevent modifying or removing EEM cli user and applet configs with-
  \# wild-carded minima of - event manager session cli username, and event manager applet-
  \# add other numbered applets 2 through 97 that you want locked in before configuring 99.
- \#   then printf '\n\nOpt \n\n'
+ \#
  \# technically applet 99 would prevent creation or modification of any applet with a digit in its mame,
  \# but any applet with only letters is un-impacted, allowing additional applets to be configured after 99
 }
