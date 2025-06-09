@@ -401,4 +401,63 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >    # . cut for length
 >    # .
 >    # Once all variables are set, the router configuration begins.
+> }
 > ```
+> ### ↘️ Steps to run RTRCFG:
+> 
+> <b>[RTRCFG.sh](https://github.com/plmcdowe/Cisco-and-Bash/blob/e0e4f82315d671b934fce4cb8525d6febec6ed69/Router-Config/RTRCFG.sh): <b>The <i>shell environment</i> with the Bash function that:</b>
+>> 1. <b>Power up a C8000 (or multiple 8300's)</b>
+>> 2. <b>Label it/them with the name(s) of the site(s) being configured for deployment.</b>     
+>> 3. <b>Connect your USB(s) to the 8300(s).</b>    
+>> 4. <b>Console into the 1st router:</b>     
+>>     - <b>At "initial config?" prompt respond 'yes' instead of 'no'</b>     
+>>     - <b>At the next prompt, just send `Ctrl+C`</b>     
+>>         - <b>This will dump you into CLI without entering an enable password and choosing 0, saving you time.</b>    
+>>       - <b>Enter the commands from the "Initial Config code-block below.</b>    
+>>         - <b>note: this will put the C8000 into fips mode, set the license level, and upgrade the IOS all in one reload.</b>     
+>>         - <b>Said another way - <i>this is an important step and will save you from 2 extra reloads!</i></b>    
+>> ```bash
+>> en
+>>
+>> copy usb0:SiteNets bootflash:
+>>
+>> copy usb0:SiteNames bootflash:
+>>
+>> copy usb0:RTRCFG bootflash:
+>>
+>> copy usb0:c8000be-universalk9.17.12.04b.SPA.bin bootflash:
+>>
+>> ! WAIT FOR THE IMAGE TO TRANSFER
+>>
+>> conf t
+>> no logging console
+>> shell processing full
+>> config-register 0x2102
+>>
+>> banner login ^
+>> +-------------------------------------------------------------------------------------------------------------------+
+>> YOUR BANNER HERE
+>>
+>> - AND STILL HERE
+>> +-------------------------------------------------------------------------------------------------------------------+
+>> 
+>> ^
+>>
+>> license boot level network-advantage
+>> platform ipsec fips-mode
+>> end
+>> wr
+>>
+>> install add file bootflash:c8000be-universalk9.17.12.04b.SPA.bin activate commit prompt-level none
+>> ```     
+> 
+> You could remove the USB (or have multiple USBs with the files) and move your console down the line as each router upgrades its IOS and reloads.
+> Regardless, once the first (or only) router has booted; console back in and continue:
+>    
+> 5. <b>Send `install remove inactive`</b>    
+> 6. <b>Send `shell environment load bootflash:RTRCFG replace</b>    
+> 7. <b>Paste in the site name you are configuring for.</b>
+> 8. <b>When you hit enter, the config will begin and complete in ~10 seconds.</b>
+> 9. <b>When prompted to, sign back in with your local account</b>
+> 10. <b> Send `wr`</b>
+>
