@@ -4,7 +4,7 @@
 |_ _ _ _ _ _ _<img width="648" alt="ThisIsFine" src="https://github.com/user-attachments/assets/157a8b74-98f8-466f-bb77-176fa81c4725" />_ _ _ _ _ _ _|
 |     |    
 ## [ 1 ] **Intro:**   
-IOS.sh has been available in Cisco since *early* IOS 15.    
+IOS.sh has been available in Cisco since IOS 12.    
 It is a shell environment that allows many familiar Bash/Shell commands, plus standard Cisco commands.   
 IOS.sh can be enabled epehmerally with: `terminal shell` from privileged exec.     
 Or, it can be configured as a permenant feature with:
