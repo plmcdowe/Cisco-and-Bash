@@ -405,7 +405,6 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 > ```
 > ### ↘️ Steps to run RTRCFG:
 > 
-> <b>[RTRCFG.sh](https://github.com/plmcdowe/Cisco-and-Bash/blob/e0e4f82315d671b934fce4cb8525d6febec6ed69/Router-Config/RTRCFG.sh): <b>The <i>shell environment</i> with the Bash function that:</b>
 >> 1. <b>Power up a C8000 (or multiple 8300's)</b>
 >> 2. <b>Label it/them with the name(s) of the site(s) being configured for deployment.</b>     
 >> 3. <b>Connect your USB(s) to the 8300(s).</b>    
