@@ -270,7 +270,7 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >>     - <b>Configure the DHCP Pool for that site</b>
 >> 3. <b>Continue the loop</b>
 ## [ 4 ] **<ins>RTRCFG</ins>:**     
-> ### ↘️ Completely configure a blank IOS 17.12 C8300 router with 3 files in +/- 10 seconds.
+> ### ↘️ Completely configure a blank IOS 17.12 C8000 router with 3 files in +/- 10 seconds.
 > 
 > <b>[RTRCFG.sh](https://github.com/plmcdowe/Cisco-and-Bash/blob/e0e4f82315d671b934fce4cb8525d6febec6ed69/Router-Config/RTRCFG.sh): <b>The <i>shell environment</i> with the Bash function that:</b>
 >> 1. <b>Reads in and displays all available site names with `cat bootflash:SiteNames`</b>
@@ -405,9 +405,9 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 > ```
 > ### ↘️ Steps to run RTRCFG:
 > 
->> 1. <b>Power up a C8000 (or multiple 8300's)</b>
+>> 1. <b>Power up a C8000 (or multiple 8000's)</b>
 >> 2. <b>Label it/them with the name(s) of the site(s) being configured for deployment.</b>     
->> 3. <b>Connect your USB(s) to the 8300(s).</b>    
+>> 3. <b>Connect your USB(s) to the 8000(s).</b>    
 >> 4. <b>Console into the 1st router:</b>     
 >>     - <b>At "initial config?" prompt respond 'yes' instead of 'no'</b>     
 >>     - <b>At the next prompt, just send `Ctrl+C`</b>     
