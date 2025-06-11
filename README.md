@@ -455,7 +455,7 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 > Regardless, once the first (or only) router has booted; console back in and continue:
 >    
 > 5. <b>Send `install remove inactive`</b>    
-> 6. <b>Send `shell environment load bootflash:RTRCFG replace</b>    
+> 6. <b>Send `shell environment load bootflash:RTRCFG replace`</b>    
 > 7. <b>Paste in the site name you are configuring for.</b>
 > 8. <b>When you hit enter, the config will begin and complete in ~10 seconds.</b>
 > 9. <b>When prompted to, sign back in with your local account</b>
