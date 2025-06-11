@@ -6,8 +6,8 @@
 ## [ 1 ] **Intro:**   
 IOS.sh has been available in Cisco since IOS 12.    
 It is a shell environment that allows many familiar Bash/Shell commands, plus standard Cisco commands.   
-IOS.sh can be enabled epehmerally with: `terminal shell` from privileged exec.     
-Or, it can be configured as a permenant feature with:
+IOS.sh can be enabled ephemerally with: `terminal shell` from privileged exec.     
+Or, it can be configured as a permanent feature with:
 ```
 conf t
 shell processing full
@@ -22,7 +22,7 @@ I chose the `shell processing full` route.
 * copypasta from the Cisco doc's      
 * *hardly* scrape the surface of this feature's capabilities.       
 
-So, I put this readme togther with progressively more advanced examples and practical implementations.   
+So, I put this readme together with progressively more advanced examples and practical implementations.   
 
 <ins>The examples in this README should help make sense of the Shell environments in the repository</ins>:
 - environment [SWCFG](https://github.com/plmcdowe/Cisco-and-Bash/blob/b8ec35e9fc6876c00d25d746d1dbb7792a7b0706/SWCFG.sh)       
@@ -35,7 +35,7 @@ So, I put this readme togther with progressively more advanced examples and prac
 - 🚧 [TRAINING-TROUBLESHOOTING]()        
 
 You may notice that the shell environments in the repository are saved with the shell <i>'.sh'</i> extension.     
-I only saved these as shell files for presentation in GitHub. In production, I save them as extentionless files.     
+I only saved these as shell files for presentation in GitHub. In production, I save them as extensionless files.     
 But, they will run in IOS.sh as <i>'.sh'</i> files, as well.    
 
 I won't be deliberately covering any regex basics.      
@@ -73,7 +73,7 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >>> ![uname-func-1-R](https://github.com/user-attachments/assets/21a54686-85f4-4d4a-b128-061ed00e5982)     
 >> ```Bash
 >> # Alternatively, you could constrain to an exact release using `uname -a` with a "," in your pattern
->> # Note also, you can eliminate storing the retun and simply test the command's returned status
+>> # Note also, you can eliminate storing the return and simply test the command's returned status
 >>   function version(){
 >>    if [[ `uname -a|grep '17.12.3,'` ]]; then printf 'compliant';
 >>    else printf 'not compliant'; fi;
@@ -126,7 +126,7 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >>> ![int-only-connected-trunks-R](https://github.com/user-attachments/assets/eab52130-f95f-4b90-a893-d768a605f912)
 >>
 >> The next block is the remaining combination of: [ <ins>connected</ins> | <ins>disconnected</ins> ] [ <ins>access</ins> | <ins>trunk</ins> ] interfaces.    
->> I'm not including screenshots for each because it will look the same as above.      
+>> I'm not including screenshots for each because they will look the same as above.      
 >> The `function trunks` includes a screenshot to demonstrate a simple use case for compliance.     
 >> ```bash
 >> # Display full output of only DISCONNECTED TRUNK interfaces *THIS SHOULD RETURN THE GREP PATTERN, NO INTERFACES*:
@@ -146,7 +146,7 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >> # Display only the interface of CONNECTED ACCESS interfaces on vlan 84:
 >>   sh int status|grep '^[[:alpha:]]{2}./.*connected[[:blank:]]{4}84'| cut -d ' ' -f 1
 >> 
->> # Lets take a look at a function to introduce a simple compliance usecase:
+>> # Lets take a look at a function to introduce a simple compliance use case:
 >>   function trunks(){
 >>    for t in `sh int status|grep '^[[:alpha:]]{2}./.*connected[[:blank:]]{4}trunk'| cut -d ' ' -f 1`
 >>     do printf '\nMy name is '"$t"' and I am a connected trunk\n'; done;
@@ -161,7 +161,7 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >> - <b>A CAT-1 per device discovered to not be in FIPS {<i>rule IDs vary by device family for this finding</i>}</b>
 >> - <b>A Key Indicator of Risk (KIOR)</b>
 >>   - <b>KIORs were added in Command Cyber Readiness Inspection 3.0 (CCRI)</b>
->>   - <b>if your enterprise recieves arbitrarily too many KIORs,</br></b>
+>>   - <b>if your enterprise receives arbitrarily too many KIORs,</br></b>
 >>     <b>your enterprise (state of Indiana in my case) will be disconnected.</b>
 >>   - <b>certain KIORs are easy to remediate (non-secure services/protocols: FTP)</b>
 >>     - <b>others are difficult (FIPS)</b>
@@ -210,7 +210,7 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >>   sh fip a
 >>    # "FIPS: No key installed."
 >>   sh fip s
->>    # "Switch and Stacking are not running in fips mode"
+>>    # "Switch and Stacking are not running in FIPS mode"
 >> ```
 >> <b><ins>Easy enough, we'll check based on 'not' and 'no'. Let's skip ahead to the complete function</ins>:</b>
 >> ```bash
@@ -235,7 +235,7 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >>        - <b>[Note]: the CAPWAPNETS file in [ DHCP-Pools directory ](DHCP-Pool) has placeholder Net IPs and masks.</b>
 >> 2. <b>Use a running count of loops and a modulo test to "pause" the loop to:</b>
 >>    - <b>Calculate `$IP` from `$NET`</b>
->>    - <b>Configure the `dhcp exluded address` and the `pool` with `network` and `default router`</b></br>
+>>    - <b>Configure the `dhcp excluded address` and the `pool` with `network` and `default router`</b></br>
 >
 > <b><ins>I'll highlight the key bits here</ins>:</b>
 > ```Bash
@@ -265,7 +265,7 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >>     - <b>If `n` is less than or equal to 198, test for remainder of `n` by 3</b>
 >>     - <b>If there is a remainder, then `l` must contain either `SITENAME` or `NET IP`</b>
 >> 2. <b>Else there is no remainder:</b>
->>     - <b>Then `l` is on 3rd and final loop of a site and contains `NET MASK`</b>
+>>     - <b>Then `l` is on the 3rd and final loop of a site and contains `NET MASK`</b>
 >>     - <b>Add 1 to last octet of `NET IP` for `Default Router`</b>
 >>     - <b>Configure the DHCP Pool for that site</b>
 >> 3. <b>Continue the loop</b>
@@ -283,9 +283,9 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >>     - <b>If `$s` is not only capital letters 3 to 17 characters in length:</b>    
 >>       - <b>print error and call `RTRCFG` again</b>
 >> 3. <b>With all networks stored:</b>
->>     - <b>Performs string manipulation to calulate Default Router IP's from Network IP's</b>    
+>>     - <b>Performs string manipulation to calculate Default Router IP's from Network IP's</b>    
 >
-> <b>[SiteNets](https://github.com/plmcdowe/Cisco-and-Bash/blob/9e954d4ac55003f3c1911e3dbde1994a4c2829e8/Router-Config/SiteNets): <b>extension-less file follwing the <i>sanitized</i> format below:</b>     
+> <b>[SiteNets](https://github.com/plmcdowe/Cisco-and-Bash/blob/9e954d4ac55003f3c1911e3dbde1994a4c2829e8/Router-Config/SiteNets): <b>extension-less file following the <i>sanitized</i> format below:</b>     
 >> <sup><i>the `#` commented variable names are not in production, and only for correlating to the function in `RTRFCG`</i></sup>     
 >> ```bash
 >> UNIQUESITENAME       # $HOSTNAME
@@ -324,7 +324,7 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >> # . cut, but repeats for as many sites as necessary
 >> # .
 >> ```
-> <b>[SiteNames](https://github.com/plmcdowe/Cisco-and-Bash/blob/d2d989c7516cf71e85fa03b716bd47677cfd4a4a/Router-Config/SiteNames): <b>extensionless file follwing the <i>sanitized</i> format below:</b>     
+> <b>[SiteNames](https://github.com/plmcdowe/Cisco-and-Bash/blob/d2d989c7516cf71e85fa03b716bd47677cfd4a4a/Router-Config/SiteNames): <b>extensionless file following the <i>sanitized</i> format below:</b>     
 >> ```bash
 >> ATLANTA       DETROIT         JACKSONVILLE    MINNEAPOLIS     PORTLAND        SONOMA
 >> AUSTIN        DOVER           KINGSTON        MONACO          PRAGUE          SPA
@@ -378,7 +378,7 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >      fi
 >     fi
 >    done
->    # String manipulation to calulate default router IP's
+>    # String manipulation to calculate default router IP's
 >    a=`echo $PM1_NET|cut -d "." -f 1`
 >    b=`echo $PM1_NET|cut -d "." -f 2`
 >    c=`echo $PM1_NET|cut -d "." -f 3`
@@ -413,7 +413,7 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >>     - <b>At the next prompt, just send `Ctrl+C`</b>     
 >>         - <b>This will dump you into CLI without entering an enable password and choosing 0, saving you time.</b>    
 >>       - <b>Enter the commands from the "Initial Config code-block below.</b>    
->>         - <b>note: this will put the C8000 into fips mode, set the license level, and upgrade the IOS all in one reload.</b>     
+>>         - <b>note: this will put the C8000 into FIPS mode, set the license level, and upgrade the IOS all in one reload.</b>     
 >>         - <b>Said another way - <i>this is an important step and will save you from 2 extra reloads!</i></b>    
 >> ```bash
 >> en
