@@ -445,7 +445,6 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >> ^
 >>
 >> license boot level network-advantage
->> platform ipsec fips-mode
 >> end
 >> wr
 >>
