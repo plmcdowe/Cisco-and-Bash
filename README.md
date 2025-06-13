@@ -411,8 +411,9 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >> 4. <b>Console into the 1st router:</b>     
 >>     - <b>At "initial config?" prompt respond 'yes' instead of 'no'</b>     
 >>     - <b>At the next prompt, just send `Ctrl+C`</b>     
->>         - <b>This will dump you into CLI without entering an enable password and choosing 0, saving you time.</b>    
->>       - <b>Enter the commands from the "Initial Config code-block below.</b>    
+>>         - <b>This will dump you into CLI without entering an enable password and choosing 0,    
+>>           (saving you time)!</b>    
+>>       - <b>Enter the commands from the "Initial Config" code-block below.</b>    
 >>         - <b>note: this will set the license level, and upgrade the IOS all in one reload.</b>     
 >>         - <b>Said another way - <i>this is an important step and will save you from an extra reloads!</i></b>
 >>         - <b>But - <i>You will have to perform a second reload after the configuration is wrote, for FIPS mode.    
