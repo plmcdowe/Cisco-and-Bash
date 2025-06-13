@@ -415,7 +415,7 @@ At times, I may point out a basic regex concept for the sake of explaining IOS.s
 >>           (saving you time)!</b>    
 >>       - <b>Enter the commands from the "Initial Config" code-block below.</b>    
 >>         - <b>note: this will set the license level, and upgrade the IOS all in one reload.</b>     
->>         - <b>Said another way - <i>this is an important step and will save you from an extra reloads!</i></b>
+>>         - <b>Said another way - <i>this is an important step and will save you from an extra reload!</i></b>
 >>         - <b>But - <i>You will have to perform a second reload after the configuration is wrote, for FIPS mode.    
 >>           </i>This second reload could be the power off/on between your desk and deployment at the site.</b>
 >> ```bash
